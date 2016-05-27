@@ -1,0 +1,12 @@
+machine:
+  node:
+    version: 5.7.0
+deployment:
+  staging:
+    branch: master
+    heroku:
+      appname: reverie-forge
+test:
+  override:
+    - npm run test:ci
+    - npm run lint
