@@ -102,7 +102,6 @@
     "nodemon": "^1.9.1",
     "nyc": "^6.4.0",
     "opener": "^1.4.1",
-    "react-addons-perf": "^15.0.2",
     "react-addons-test-utils": "^15.0.1",
     "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0",
