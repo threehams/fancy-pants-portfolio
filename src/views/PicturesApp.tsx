@@ -54,8 +54,8 @@ export class BasePicturesApp extends React.Component<PicturesProps, {}> {
               <Col xs={12}>
                 <Panel heading="Heading">
                   <img className="img-fluid"
-                      width={1200}
-                      height={400}
+                      width={1900}
+                      height={600}
                       alt="1200x400"
                       src="https://placecage.com/1200/400"
                   />

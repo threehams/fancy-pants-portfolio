@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import { Alert, Loader, Panel } from '../components';
 import { Picture, State } from '../models';
 import * as pictureActions from '../actions/pictureActions';
+import Grid = require('react-bootstrap/lib/Grid');
 
 const styles = require('./PictureApp.scss');
 
@@ -32,21 +33,24 @@ export class BasePictureApp extends React.Component<PhotoProps, {}> {
     if (!picture) {
       return <Loader></Loader>;
     }
+
     return (
-      <div>
-        <Link to="/" styleName="close-button">
-          <div>&times;</div>
-        </Link>
-        <Alert type="error" text={alertText} />
-        <Panel>
-          <img width={picture.width} height={picture.height} styleName="image-fullscreen" src={picture.url} />
-        </Panel>
-        <Panel>
-          <div>
-            <h2>{ picture.title }</h2>
-            {picture.description}
-          </div>
-        </Panel>
+      <div styleName="background">
+        <Grid fluid className="main">
+          <Link to="/" styleName="close-button">
+            <div>&times; </div>
+          </Link>
+          <Alert type="error" text={alertText} />
+          <Panel>
+            <img width={picture.width} height={picture.height} src={picture.url} />
+          </Panel>
+          <Panel>
+            <div>
+              <h2>{picture.title}</h2>
+              {picture.description}
+            </div>
+          </Panel>
+        </Grid>
       </div>
     );
   }

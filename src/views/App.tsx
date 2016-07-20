@@ -8,7 +8,7 @@ interface AppProps {
   store: any;
 }
 
-class App extends React.Component<AppProps, {}> {
+export class App extends React.Component<AppProps, {}> {
   public render() {
     return (
       <Provider store={this.props.store}>
