@@ -4,8 +4,6 @@ import express = require('express');
 import webpack = require('webpack');
 import compression = require('compression');
 import webpackConfig = require('../webpack.config');
-import webpackDevMiddleware = require('webpack-dev-middleware');
-import webpackHotMiddleware = require('webpack-hot-middleware');
 
 import config from './serverConfig';
 import fixturePictures from './fixtures/fixturePictures';
@@ -13,6 +11,8 @@ import fixturePictures from './fixtures/fixturePictures';
 const app = express();
 
 if (config.development) {
+  const webpackDevMiddleware = require('webpack-dev-middleware');
+  const webpackHotMiddleware = require('webpack-hot-middleware');
   const compiler = webpack(webpackConfig);
   app.use(webpackDevMiddleware(compiler, {
     noInfo: true,
