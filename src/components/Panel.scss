@@ -1,0 +1,20 @@
+@import "~bootstrap/scss/variables";
+@import "../styles/variables";
+
+.container {
+  box-shadow: $box-shadow-low;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.heading {
+  background-color: black;
+  border-right: $border-white;
+  border-top: $border-white;
+  bottom: 0;
+  color: white;
+  min-width: 33%;
+  padding: 5px;
+  position: absolute;
+  text-align: center;
+}

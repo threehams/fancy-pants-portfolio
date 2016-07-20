@@ -15,7 +15,7 @@ describe('Loader', function() {
   });
 
   context('when showUntil is true', function() {
-    it('shows a down arrow when expanded', function() {
+    it('shows children', function() {
       const element = shallow(<Loader showUntil={true}><dl /></Loader>);
       expect(element.contains(<div className="loader" />)).to.be.false;
       expect(element.contains(<dl />)).to.be.true;

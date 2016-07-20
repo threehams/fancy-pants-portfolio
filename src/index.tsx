@@ -1,4 +1,4 @@
-import './style.css';
+import './styles/bootstrap.scss';
 
 // Import only needed polyfills - saves lots of space and bundling time
 import './polyfills';

@@ -1,19 +1,20 @@
 /* eslint-env node */
 /* eslint no-process-env:0 */
-/* eslint no-var:0 */
 
-var path = require('path');
-var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-var ENTRY_POINTS = {
+const ENTRY_POINTS = {
   development: ['webpack-hot-middleware/client', 'react-hot-loader/patch', './src/index.tsx'],
   production: ['./src/index.tsx'],
 };
 
-var ENV = process.env.NODE_ENV || 'development';
+const ENV = process.env.NODE_ENV || 'development';
+const extractModules = new ExtractTextPlugin('components.css', { allChunks: true });
+const extractBootstrap = new ExtractTextPlugin('bootstrap.css', { allChunks: true });
 
-var PLUGINS = {
+const PLUGINS = {
   development: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
@@ -36,30 +37,43 @@ var PLUGINS = {
         NODE_ENV: '\'production\''
       }
     }),
-    new ExtractTextPlugin('app.css', {
-      allChunks: true
-    })
+    extractModules,
+    extractBootstrap,
   ]
 };
-var DEV_TOOLS = {
+const DEV_TOOLS = {
   development: 'eval',
   production: 'source-map'
 };
-var CSS_LOADERS = {
-  development: {
-    test: /\.css$/,
-    loaders: [
-      'style?sourceMap',
-      'css?modules&importLoaders=1&localIdentName=[path]__[name]__[local]'
-    ],
-  },
-  production: {
-    test: /\.css$/,
-    loader: ExtractTextPlugin.extract(
-      'style',
-      'css?modules&importLoaders=1&localIdentName=[name]__[local]'
-    )
-  }
+const CSS_LOADERS = {
+  development: [
+    {
+      test: /^(?:(?!bootstrap).)*\.scss$/,
+      loaders: [
+        'style?sourceMap',
+        'css?modules&importLoaders=1&localIdentName=[path]__[name]__[local]',
+        'sass',
+      ],
+    },
+    {
+      test: /bootstrap\.scss$/,
+      loaders: ['style?sourceMap', 'css', 'sass'],
+    }
+  ],
+  production: [
+    {
+      test: /^(?:(?!bootstrap).)*\.scss$/,
+      loader: extractModules.extract(
+        'style',
+        'css?modules&importLoaders=1&localIdentName=[path]__[name]__[local]',
+        'sass'
+      )
+    },
+    {
+      test: /bootstrap\.scss$/,
+      loader: extractBootstrap.extract('style', 'css', 'sass')
+    }
+  ]
 };
 
 module.exports = {
@@ -82,7 +96,7 @@ module.exports = {
         loaders: ['react-hot-loader/webpack', 'ts'],
         include: path.join(__dirname, 'src')
       },
-      CSS_LOADERS[ENV],
+      ...CSS_LOADERS.development,
       {
         test: /\.json$/,
         loader: 'json',

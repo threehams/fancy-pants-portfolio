@@ -1,0 +1,30 @@
+@import '~bootstrap/scss/variables';
+
+.background {
+  padding-top: 20px;
+}
+
+.thumbnail-square {
+  padding-top: 100%;
+}
+
+.thumbnail-wide {
+  padding-top: calc(50% - 4px);
+}
+
+.thumbnail-square, .thumbnail-wide {
+  &:before {
+    content: "";
+    display: block;
+    width: 100%;
+  }
+
+  > .content {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-size: cover;
+  }
+}

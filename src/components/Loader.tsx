@@ -1,7 +1,7 @@
 import * as React from 'react';
 import CssModules = require('react-css-modules');
 import shallowCompare = require('react-addons-shallow-compare');
-const styles = require('./Loader.css');
+const styles = require('./Loader.scss');
 
 interface LoaderProps {
   showUntil?: boolean;

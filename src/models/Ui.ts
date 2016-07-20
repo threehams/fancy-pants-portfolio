@@ -5,7 +5,7 @@ interface UiProps {
 }
 
 export class Ui extends Record<UiProps>({
-  alertText: null,
+  alertText: '',
 }) implements UiProps {
   public alertText: string;
 };

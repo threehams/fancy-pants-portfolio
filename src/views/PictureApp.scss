@@ -1,0 +1,32 @@
+.close-button {
+  color: white;
+  font-size: 48px;
+  left: 20px;
+  position: absolute;
+  top: 5px;
+  z-index: 1;
+
+  &:hover, &:active, :link, :visited {
+    text-decoration: none;
+  }
+
+  &:hover, &:active {
+    color: darken(white, 20);
+  }
+}
+
+.fullscreen {
+  &:before {
+    content: "";
+    display: block;
+    width: 100%;
+  }
+
+  > .content {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}

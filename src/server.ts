@@ -29,14 +29,16 @@ if (config.development) {
 }
 
 app.get('/api/pictures', function(request, response) {
-  response.send(fixturePictures);
+  setTimeout(() => {
+    response.send(fixturePictures);
+  }, 1000);
 });
 
 app.get('*', function(request, response) {
   response.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.listen(config.port || 8080, function(err) {
+app.listen(config.port || 8080, function(err: Error) {
   if (err) {
     // tslint:disable
     console.log(err);

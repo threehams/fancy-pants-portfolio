@@ -1,10 +1,10 @@
 import * as React from 'react';
 import CssModules = require('react-css-modules');
 import shallowCompare = require('react-addons-shallow-compare');
-const styles = require('./Panel.css');
+const styles = require('./Panel.scss');
 
 interface PanelProps {
-  heading: string;
+  heading?: string;
 }
 
 export class PanelUnstyled extends React.Component<PanelProps, {}> {
@@ -18,10 +18,12 @@ export class PanelUnstyled extends React.Component<PanelProps, {}> {
 
     return (
       <div styleName="container">
-        <div styleName="heading">
-          { heading }
-        </div>
-        <div styleName="body">
+        {
+          heading && <div styleName="heading">
+            { heading }
+          </div>
+        }
+        <div>
           { children }
         </div>
       </div>
