@@ -9,10 +9,8 @@
     "moduleResolution": "node",
     "noImplicitAny": false
   },
-  "exclude": [
-    "node_modules",
-    "server.js",
-    "serverConfig.js",
-    "webpack.config.js"
+  "include": [
+    "src/**/*",
+    "typings/**/*"
   ]
 }

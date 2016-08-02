@@ -2,13 +2,12 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import CssModules = require('react-css-modules');
 import { Link } from 'react-router';
-
-import { Alert, Loader, Panel } from '../components';
-import { Picture, State } from '../models';
-import * as pictureActions from '../actions/pictureActions';
 import Grid = require('react-bootstrap/lib/Grid');
 
-const styles = require('./PictureApp.scss');
+import { Alert, Loader, Card } from '../components';
+import { Picture, State } from '../models';
+import * as pictureActions from '../actions/pictureActions';
+import styles = require('./PictureApp.scss');
 
 interface PhotoProps {
   alertText?: string;
@@ -41,15 +40,20 @@ export class BasePictureApp extends React.Component<PhotoProps, {}> {
             <div>&times; </div>
           </Link>
           <Alert type="error" text={alertText} />
-          <Panel>
-            <img width={picture.width} height={picture.height} src={picture.url} />
-          </Panel>
-          <Panel>
+          <Card>
+            <div styleName="fullscreen" style={{ maxWidth: picture.width }}>
+              <div styleName="force-ratio" style={{ paddingTop: `${ picture.height / picture.width * 100 }%` }} />
+              <div styleName="content">
+                <img src={ picture.url } styleName="image" />
+              </div>
+            </div>
+          </Card>
+          <Card>
             <div>
               <h2>{picture.title}</h2>
               {picture.description}
             </div>
-          </Panel>
+          </Card>
         </Grid>
       </div>
     );

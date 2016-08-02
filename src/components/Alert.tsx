@@ -1,7 +1,8 @@
 import * as React from 'react';
 import CssModules = require('react-css-modules');
 import shallowCompare = require('react-addons-shallow-compare');
-const styles = require('./Alert.scss');
+
+import styles = require('./Alert.scss');
 
 interface AlertProps {
   text?: string;

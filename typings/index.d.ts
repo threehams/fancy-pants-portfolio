@@ -17,6 +17,7 @@
 /// <reference path="modules/mime/index.d.ts" />
 /// <reference path="modules/react-redux/index.d.ts" />
 /// <reference path="modules/react-router/index.d.ts" />
+/// <reference path="modules/redux-form/index.d.ts" />
 /// <reference path="modules/redux-thunk/index.d.ts" />
 /// <reference path="modules/sinon-chai/index.d.ts" />
 /// <reference path="modules/sinon/index.d.ts" />

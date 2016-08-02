@@ -5,9 +5,9 @@
 .close-button {
   color: white;
   font-size: 48px;
-  left: 20px;
   position: absolute;
-  top: 5px;
+  right: 20px;
+  top: 10px;
   z-index: 1;
 
   &:hover, &:active, :link, :visited {
@@ -20,9 +20,13 @@
 }
 
 .fullscreen {
-  &:before {
-    content: "";
+  margin: 0 auto;
+  max-height: 90vh;
+  position: relative;
+
+  > .force-ratio {
     display: block;
+    overflow: hidden;
     width: 100%;
   }
 
@@ -32,5 +36,12 @@
     position: absolute;
     right: 0;
     top: 0;
+
+    .image {
+      display: block;
+      margin: 0 auto;
+      max-height: 90vh;
+      max-width: 100%;
+    }
   }
 }

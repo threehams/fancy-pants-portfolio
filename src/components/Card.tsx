@@ -1,14 +1,15 @@
 import * as React from 'react';
 import CssModules = require('react-css-modules');
 import shallowCompare = require('react-addons-shallow-compare');
-const styles = require('./Panel.scss');
 
-interface PanelProps {
+import styles = require('./Card.scss');
+
+interface CardProps {
   heading?: string;
 }
 
-export class PanelUnstyled extends React.Component<PanelProps, {}> {
-  public shouldComponentUpdate(nextProps: PanelProps, nextState: {}) {
+export class CardUnstyled extends React.Component<CardProps, {}> {
+  public shouldComponentUpdate(nextProps: CardProps, nextState: {}) {
     /* istanbul-ignore-next */
     return shallowCompare(this, nextProps, nextState);
   }
@@ -23,12 +24,10 @@ export class PanelUnstyled extends React.Component<PanelProps, {}> {
             { heading }
           </div>
         }
-        <div>
-          { children }
-        </div>
+        { children }
       </div>
     );
   }
 }
 
-export const Panel = CssModules(PanelUnstyled, styles);
+export const Card = CssModules(CardUnstyled, styles);
