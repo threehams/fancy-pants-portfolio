@@ -1,11 +1,11 @@
 machine:
   node:
-    version: 6.2.0
+    version: 5.7.0
 deployment:
   staging:
     branch: master
     heroku:
-      appname: vanessamz
+      appname: reverie-forge
 test:
   override:
     - npm run test:ci

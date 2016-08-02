@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "experimentalDecorators": true,
+    "jsx": "react",
+    "module": "commonjs",
+    "outDir": "tsDist",
+    "target": "es5",
+    "moduleResolution": "node",
+    "noImplicitAny": false
+  },
+  "include": [
+    "src/**/*",
+    "typings/**/*"
+  ]
+}

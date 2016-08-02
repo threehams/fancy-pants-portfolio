@@ -1,0 +1,21 @@
+
+$border: 1px solid #ccc;
+
+.row.no-gutter {
+  margin-right: -4px;
+  margin-left: -4px;
+}
+.row.no-gutter > [class^="col-"],
+.row.no-gutter > [class*=" col-"] {
+  padding-right: 4px;
+  padding-left: 4px;
+}
+
+.divider {
+  &:after {
+    opacity: 0.6;
+    content: "|";
+    display: inline-block;
+    padding: 0 5px;
+  }
+}
