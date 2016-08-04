@@ -35,16 +35,18 @@ export class BasePictureApp extends React.Component<PhotoProps, {}> {
 
     return (
       <div styleName="background">
-        <Grid fluid className="main">
+        <Grid fluid styleName="container">
           <Link to="/" styleName="close-button">
-            <div>&times; </div>
+            <div>&times;</div>
           </Link>
           <Alert type="error" text={alertText} />
           <Card>
-            <div styleName="fullscreen" style={{ maxWidth: picture.width }}>
-              <div styleName="force-ratio" style={{ paddingTop: `${ picture.height / picture.width * 100 }%` }} />
-              <div styleName="content">
-                <img src={ picture.url } styleName="image" />
+            <div styleName="backdrop">
+              <div styleName="fullscreen" style={{ maxWidth: picture.width }}>
+                <div styleName="force-ratio" style={{ paddingTop: `${ picture.height / picture.width * 100 }%` }} />
+                <div styleName="content">
+                  <img src={ picture.url } styleName="image" />
+                </div>
               </div>
             </div>
           </Card>

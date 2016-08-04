@@ -1,6 +1,7 @@
 import { Record } from 'immutable';
 
 interface PictureProps {
+  backgroundColor?: string;
   description: string;
   height: number;
   id: string;
@@ -12,6 +13,7 @@ interface PictureProps {
 }
 
 export class Picture extends Record<PictureProps>({
+  backgroundColor: 'black',
   description: '',
   height: 0,
   id: '',
@@ -21,6 +23,7 @@ export class Picture extends Record<PictureProps>({
   url: '',
   width: 1,
 }) implements PictureProps {
+  public backgroundColor: string;
   public description: string;
   public height: number;
   public id: string;

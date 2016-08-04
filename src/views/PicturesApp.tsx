@@ -7,7 +7,7 @@ import Row = require('react-bootstrap/lib/Row');
 import Col = require('react-bootstrap/lib/Col');
 import Grid = require('react-bootstrap/lib/Grid');
 
-import { Alert, Loader, Card } from '../components';
+import { Alert, Loader, GridList, GridItem } from '../components';
 import { Picture, State } from '../models';
 import * as pictureActions from '../actions/pictureActions';
 import styles = require('./PicturesApp.scss');
@@ -15,12 +15,16 @@ import styles = require('./PicturesApp.scss');
 const GRID_SETTINGS = {
   '1': {
     lg: 2,
-    sm: 3,
+    md: 3,
+    sm: 4,
+    xl: 2,
     xs: 6,
   },
   '2': {
     lg: 4,
+    md: 4,
     sm: 6,
+    xl: 3,
     xs: 12,
   },
 };
@@ -44,28 +48,26 @@ export class BasePicturesApp extends React.Component<PicturesProps, {}> {
   public render() {
     const {
       alertText,
+      children,
       pictures,
     } = this.props;
     return (
       <div styleName="background">
         <Alert text={alertText} />
         <Loader showUntil={!!pictures.size}>
-          <Grid fluid className="main">
+          <Grid fluid styleName="container">
             <Row className="no-gutter">
               <Col xs={12}>
-                <Card heading="Heading">
-                  <img className="img-fluid"
-                      width={1900}
-                      height={600}
-                      alt="1200x400"
-                      src="https://placecage.com/1200/400"
-                  />
-                </Card>
+                <div styleName="banner" style={{ backgroundImage: `url(/assets/banner.png)` }} />
+                <div styleName="banner-scrim" />
+                <h1>Vanessa Zuloaga</h1>
               </Col>
             </Row>
-            <Row className="no-gutter">
-              { pictures.map(this.renderTile) }
-            </Row>
+            <GridList>
+              <Row className="grid-list">
+                { pictures.map(this.renderTile) }
+              </Row>
+            </GridList>
             <Row>
               <Col xs={12}>
                 <p className="copy-dark">© me</p>
@@ -73,6 +75,9 @@ export class BasePicturesApp extends React.Component<PicturesProps, {}> {
             </Row>
           </Grid>
         </Loader>
+        <div styleName="detail-view">
+          { children }
+        </div>
       </div>
     );
   }
@@ -82,12 +87,12 @@ export class BasePicturesApp extends React.Component<PicturesProps, {}> {
     const styleName = STYLE_NAMES[picture.thumbnailWidth];
     return (
       <Col key={picture.id} {...gridProps}>
-        <Link to={`/pictures/${picture.id}`}>
-          <Card heading={picture.title}>
+        <Link to={`/pictures/${picture.id}`} className="link-unstyled">
+          <GridItem heading={picture.title} backgroundColor={picture.backgroundColor}>
             <div styleName={styleName}>
               <div styleName="content" style={{backgroundImage: `url("${picture.thumbnailUrl}")`}} />
-            </div>
-          </Card>
+              </div>
+          </GridItem>
         </Link>
       </Col>
     );

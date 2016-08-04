@@ -1,10 +1,7 @@
-@import "~bootstrap/scss/variables";
-
-$body-bg: $gray-lighter;
-$border-white: 1px solid white;
+$font-family-sans-serif: Roboto, sans-serif;
 $brand-primary: orange;
+$border-white: 1px solid white;
 $link-color: $brand-primary;
-
+$body-bg: white;
 $shadow-color: rgba(0, 0, 0, 0.5);
-
 $box-shadow-low: 1px 1px 2px $shadow-color;
