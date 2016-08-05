@@ -17,15 +17,36 @@
 
 .banner-scrim {
   @extend .banner;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0,0,0,0) 40%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0,0,0,0) 50%);
   position: absolute;
   top: 0;
   z-index: 1;
 }
 
+.contact-details {
+  bottom: 0;
+  color: white;
+  left: 50%;
+  position: absolute;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
 .container {
   @include media-breakpoint-down(sm) {
     padding: 4px;
+  }
+}
+
+.list-divided {
+  > li {
+    display: inline-block;
+    &:not(:last-of-type):after {
+      content: "|";
+      margin: 0 5px;
+      opacity: 0.5;
+    }
   }
 }
 
@@ -58,7 +79,9 @@
 }
 
 .detail-view {
+  background-color: $body-bg;
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: 100;
 }

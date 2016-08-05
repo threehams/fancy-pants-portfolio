@@ -1,17 +1,18 @@
-import { List } from 'immutable';
+import { PictureState } from '../models';
+import { ClosePicture, OpenPicture, ReceivePicturesSuccess } from '../actions/pictureActions';
 
-import { Picture } from '../models';
-import { ReceivePicturesSuccess } from '../actions/pictureActions';
+type Actions = ReceivePicturesSuccess | OpenPicture | ClosePicture;
 
-type Actions = ReceivePicturesSuccess;
-type PictureState = List<Picture>;
+const INITIAL_STATE = new PictureState;
 
-const INITIAL_STATE: PictureState = List([]);
-
-export const picturesReducer = (state = INITIAL_STATE, action: ReceivePicturesSuccess) => {
+export const picturesReducer = (state = INITIAL_STATE, action: Actions) => {
   switch (action.type) {
     case 'RECEIVE_PICTURES_SUCCESS':
-      return action.payload.pictures;
+      return state.set('pictures', action.payload.pictures);
+    case 'OPEN_PICTURE':
+      return state.set('sourcePicture', action.payload.source);
+    case 'CLOSE_PICTURE':
+      return state.set('sourcePicture', action.payload.source);
     default:
       return state;
   }

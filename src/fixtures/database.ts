@@ -129,8 +129,8 @@ export default {
       "width": 700,
       "thumbnailWidth": 454,
       "thumbnailHeight": 454,
-      "thumbnailTop": 113,
-      "thumbnailLeft": 26,
+      "thumbnailTop": 109,
+      "thumbnailLeft": 22,
       "title": "Wasteland 2014"
     }
   ]

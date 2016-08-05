@@ -33,14 +33,13 @@ app.get('/api/pictures', function(request, response) {
   const pictures = database.pictures.map((picture) => {
     const derived = {
       thumbnailUrl: `/assets/${picture.filename.replace('.jpg', '_thumb.jpg')}`,
-      thumbnailWidth: 1,
       url: `/assets/${picture.filename}`,
     };
     return Object.assign({}, picture, derived);
-  })
+  });
   setTimeout(() => {
     response.send(pictures);
-  }, 500);
+  }, 25);
 });
 
 app.get('*', function(request, response) {

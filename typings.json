@@ -9,6 +9,7 @@
     "mocha": "registry:dt/mocha#2.2.5+20160317120654",
     "node": "registry:dt/node#6.0.0+20160621231320",
     "react": "registry:dt/react#0.14.0+20160602151522",
+    "react-addons-css-transition-group": "registry:dt/react-addons-css-transition-group#0.14.0+20160316155526",
     "react-addons-shallow-compare": "registry:dt/react-addons-shallow-compare#0.14.0+20160316155526",
     "react-bootstrap": "registry:dt/react-bootstrap#0.0.0+20160627163812",
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",

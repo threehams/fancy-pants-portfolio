@@ -8,36 +8,15 @@ import Col = require('react-bootstrap/lib/Col');
 import Grid = require('react-bootstrap/lib/Grid');
 
 import { Alert, Loader, GridList, GridItem } from '../components';
-import { Picture, State } from '../models';
+import { Picture, SourcePicture, State } from '../models';
 import * as pictureActions from '../actions/pictureActions';
 import styles = require('./PicturesApp.scss');
-
-const GRID_SETTINGS = {
-  '1': {
-    lg: 2,
-    md: 3,
-    sm: 4,
-    xl: 2,
-    xs: 6,
-  },
-  '2': {
-    lg: 4,
-    md: 4,
-    sm: 6,
-    xl: 3,
-    xs: 12,
-  },
-};
-
-const STYLE_NAMES = {
-  '1': 'thumbnail-square',
-  '2': 'thumbnail-wide',
-};
 
 interface PicturesProps {
   alertText?: string;
   fetchPictures: Function;
   pictures: List<Picture>;
+  openPicture: pictureActions.OpenPictureFunction;
 }
 
 export class BasePicturesApp extends React.Component<PicturesProps, {}> {
@@ -60,12 +39,22 @@ export class BasePicturesApp extends React.Component<PicturesProps, {}> {
               <Col xs={12}>
                 <div styleName="banner" style={{ backgroundImage: `url(/assets/banner.png)` }} />
                 <div styleName="banner-scrim" />
-                <h1>Vanessa Zuloaga</h1>
+                <div styleName="contact-details" className="text-xs-center">
+                  <h1>Vanessa Zuloaga</h1>
+                  <h2>Artist Person</h2>
+                  <ul className="list-unstyled" styleName="list-divided">
+                    <li>Sherman Oaks, CA</li>
+                    <li>Resume</li>
+                    <li>Twitter</li>
+                    <li>Tumblr</li>
+                    <li>Twitch</li>
+                  </ul>
+                </div>
               </Col>
             </Row>
             <GridList>
               <Row className="grid-list">
-                { pictures.map(this.renderTile) }
+                { pictures.map(this.renderTile.bind(this)) }
               </Row>
             </GridList>
             <Row>
@@ -82,14 +71,29 @@ export class BasePicturesApp extends React.Component<PicturesProps, {}> {
     );
   }
 
+  private openPicture = (event: any, id: string) => {
+    const rect = event.target.getBoundingClientRect();
+    const dimensions = { height: event.target.clientHeight, width: event.target.clientWidth };
+    const position = { x: rect.left, y: rect.top };
+    this.props.openPicture(new SourcePicture({ id, position, dimensions }));
+  }
+
   private renderTile(picture: Picture) {
-    const gridProps = GRID_SETTINGS[picture.thumbnailWidth];
-    const styleName = STYLE_NAMES[picture.thumbnailWidth];
+    const gridProps = {
+      lg: 2,
+      md: 3,
+      sm: 4,
+      xs: 6,
+    };
     return (
       <Col key={picture.id} {...gridProps}>
-        <Link to={`/pictures/${picture.id}`} className="link-unstyled">
+        <Link
+          to={`/pictures/${picture.id}`}
+          className="link-unstyled"
+          onClick={(event) => this.openPicture(event, picture.id)}
+        >
           <GridItem heading={picture.title} backgroundColor={picture.backgroundColor}>
-            <div styleName={styleName}>
+            <div styleName="thumbnail-square">
               <div styleName="content" style={{backgroundImage: `url("${picture.thumbnailUrl}")`}} />
               </div>
           </GridItem>
@@ -101,7 +105,7 @@ export class BasePicturesApp extends React.Component<PicturesProps, {}> {
 
 const mapStateToProps = (state: State) => ({
   alertText: state.ui.alertText,
-  pictures: state.pictures,
+  pictures: state.pictures.pictures,
 });
 
 export const PicturesApp = connect(mapStateToProps, pictureActions)(CssModules(BasePicturesApp, styles));

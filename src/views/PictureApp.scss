@@ -1,17 +1,18 @@
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins';
 
-.background {
-  background-color: $body-bg;
-  height: 100vh;
-  position: relative;
-
-  @include media-breakpoint-up(md) {
-    padding-top: 20px;
-  }
+.backdrop {
+  background: black;
+  opacity: 0;
 }
 
 .container {
+  background-color: $body-bg;
+  height: 100vh;
+  margin: 15px;
+  padding: 0;
+  position: relative;
+
   @include media-breakpoint-down(sm) {
     padding: 0;
   }
@@ -20,11 +21,10 @@
 .close-button {
   color: white;
   font-size: 48px;
-  line-height: 32px;
   position: absolute;
   right: 20px;
-  top: 10px;
-  z-index: 1;
+  top: 20px;
+  z-index: 105;
 
   &:hover, &:active, :link, :visited {
     text-decoration: none;
@@ -43,7 +43,6 @@
   > .force-ratio {
     display: block;
     overflow: hidden;
-    width: 100%;
   }
 
   > .content {
@@ -60,8 +59,4 @@
       max-width: 100%;
     }
   }
-}
-
-.backdrop {
-  background: black;
 }

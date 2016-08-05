@@ -1,0 +1,13 @@
+.transition-picture, .transition-picture-expand {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.transition-picture {
+  z-index: 102;
+}
+
+.transition-picture-expand {
+  z-index: 101;
+}
