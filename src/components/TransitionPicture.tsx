@@ -5,6 +5,9 @@ import { Card } from '../components';
 import { Picture, SourcePicture } from '../models';
 import styles = require('./TransitionPicture.scss');
 
+const STANDARD_CURVE = 'cubic-bezier(0.4, 0.0, 0.2, 1)';
+// const STANDARD_CURVE = 'ease-in-out';
+
 interface TransitionPictureProps {
   container: HTMLElement;
   crossfadeDuration: number;
@@ -43,8 +46,12 @@ export class TransitionPictureBase extends React.Component<TransitionPictureProp
 
     const containerStyles = {
       default: {
+        left: 0,
         opacity: 0,
+        position: 'absolute',
+        top: 0,
         transform: `translate(${expandStartX + offsetX}px, ${expandStartY + offsetY}px)`,
+        zIndex: 102,
       },
       start: {
         opacity: 1,
@@ -53,7 +60,8 @@ export class TransitionPictureBase extends React.Component<TransitionPictureProp
       startActive: {
         opacity: 0,
         transform: `translate(${expandStartX + offsetX}px, ${expandStartY + offsetY}px)`,
-        transition: `${moveDuration}ms transform ease-in-out, ${crossfadeDuration}ms opacity linear ${moveDuration + crossfadeDuration}ms`,
+        transition: `${moveDuration}ms transform ${STANDARD_CURVE},
+          ${crossfadeDuration}ms opacity linear ${moveDuration + crossfadeDuration}ms`,
       },
     };
 
@@ -65,7 +73,7 @@ export class TransitionPictureBase extends React.Component<TransitionPictureProp
         width: source.dimensions.width,
       },
       startActive: {
-        transition: `${moveDuration}ms all ease-in-out`,
+        transition: `${moveDuration}ms all ${STANDARD_CURVE}`,
         width: expandStartWidth,
       },
     };
@@ -81,14 +89,16 @@ export class TransitionPictureBase extends React.Component<TransitionPictureProp
         height: 'auto',
         left: 0,
         opacity: 1,
+        position: 'relative',
         top: 0,
         width: '100%',
+        zIndex: 101,
       },
       start: {
         height: expandStartHeight,
-        left: `${expandStartX}px`,
+        left: `${expandStartX + offsetX}px`,
         opacity: 0,
-        top: `${expandStartY}px`,
+        top: `${expandStartY + offsetY}px`,
         width: expandStartWidth,
       },
       startActive: {
@@ -98,7 +108,9 @@ export class TransitionPictureBase extends React.Component<TransitionPictureProp
         left: 0,
         opacity: 1,
         top: 0,
-        transition: `${moveDuration}ms all ease-in-out ${moveDuration + crossfadeDuration}ms, ${crossfadeDuration}ms opacity linear ${moveDuration}ms`,
+        transition: `${moveDuration}ms all ${STANDARD_CURVE} ${moveDuration + crossfadeDuration}ms,
+          ${crossfadeDuration}ms opacity linear ${moveDuration}ms`,
+          // ${moveDuration}ms height ${STANDARD_CURVE} ${moveDuration + crossfadeDuration + moveDuration * 0.25}ms,
         width: '100%',
       },
     };
@@ -118,10 +130,7 @@ export class TransitionPictureBase extends React.Component<TransitionPictureProp
 
     return (
       <div>
-        <div
-          styleName="transition-picture-expand"
-          style={Object.assign({}, expandStyles.default, expandStyles[phase])}
-        >
+        <Card style={Object.assign({}, expandStyles.default, expandStyles[phase])}>
           <div styleName="fullscreen" style={{maxWidth: picture.width}}>
             <div styleName="force-ratio" style={{ paddingTop: `${picture.height / picture.width * 100}%` }} />
             <div styleName="content">
@@ -132,9 +141,8 @@ export class TransitionPictureBase extends React.Component<TransitionPictureProp
               />
             </div>
           </div>
-        </div>
+        </Card>
         <div
-          styleName="transition-picture"
           style={Object.assign({}, containerStyles.default, containerStyles[phase])}
         >
           <img

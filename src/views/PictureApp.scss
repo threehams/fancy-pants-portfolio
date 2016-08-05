@@ -1,4 +1,5 @@
 @import '~bootstrap/scss/variables';
+@import '../styles/variables';
 @import '~bootstrap/scss/mixins';
 
 .backdrop {
@@ -7,8 +8,6 @@
 }
 
 .container {
-  background-color: $body-bg;
-  height: 100vh;
   margin: 15px;
   padding: 0;
   position: relative;
@@ -19,6 +18,7 @@
 }
 
 .close-button {
+  text-shadow: $box-shadow-mid;
   color: white;
   font-size: 48px;
   position: absolute;
@@ -69,4 +69,12 @@
   margin: 0 auto;
   right: 0;
   top: 0;
+}
+
+.spotlight {
+  height: 100vh;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100vh;
 }

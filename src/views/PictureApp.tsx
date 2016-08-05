@@ -4,13 +4,13 @@ import CssModules = require('react-css-modules');
 import { Link } from 'react-router';
 import Grid = require('react-bootstrap/lib/Grid');
 
-import { Alert, Loader, Card, TransitionPicture } from '../components';
+import { Alert, Loader, TransitionPicture } from '../components';
 import { Picture, SourcePicture, State } from '../models';
 import * as pictureActions from '../actions/pictureActions';
 import styles = require('./PictureApp.scss');
 
-const CROSSFADE_DURATION = 50;
-const MOVE_DURATION = 120;
+const CROSSFADE_DURATION = 20;
+const MOVE_DURATION = 160;
 
 interface PhotoProps {
   alertText?: string;
@@ -55,6 +55,19 @@ export class BasePictureApp extends React.Component<PhotoProps, PhotoState> {
       return <Loader></Loader>;
     }
 
+    const spotlightStyles = {
+      default: {
+        backgroundColor: 'rgba(255, 255, 255, 1)',
+      },
+      start: {
+        backgroundColor: 'rgba(255, 255, 255, 0)',
+      },
+      startActive: {
+        backgroundColor: 'rgba(255, 255, 255, 1)',
+        transition: '150ms all linear',
+      },
+    };
+
     return (
       <div>
         <div styleName="container" ref={(element) => { this.containerElement = element; }}>
@@ -72,8 +85,12 @@ export class BasePictureApp extends React.Component<PhotoProps, PhotoState> {
               phase={animationPhase}
             />
           }
-
         </div>
+        <div
+          styleName="spotlight"
+          style={Object.assign({}, spotlightStyles.default, spotlightStyles[animationPhase])}
+
+        />
       </div>
     );
   }
@@ -85,7 +102,7 @@ export class BasePictureApp extends React.Component<PhotoProps, PhotoState> {
         <div styleName="content">
           <img
             ref={(element) => { this.targetElement = element; } }
-            src={picture.url}
+            src={picture.placeholderSrc}
             styleName="image"
           />
         </div>
@@ -101,7 +118,6 @@ export class BasePictureApp extends React.Component<PhotoProps, PhotoState> {
     setTimeout(() => {
       this.setState({ animationPhase: 'startActive' });
       setTimeout(() => {
-        console.log('done');
         this.setState({ animationPhase: 'done' });
       }, (CROSSFADE_DURATION * 2) + (MOVE_DURATION * 2));
     });

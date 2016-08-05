@@ -6,6 +6,7 @@ import styles = require('./Card.scss');
 
 interface CardProps {
   heading?: string;
+  style?: Object;
 }
 
 export class CardUnstyled extends React.Component<CardProps, {}> {
@@ -15,10 +16,10 @@ export class CardUnstyled extends React.Component<CardProps, {}> {
   }
 
   public render() {
-    const { children, heading } = this.props;
+    const { children, heading, style } = this.props;
 
     return (
-      <div styleName="container">
+      <div styleName="container" style={style}>
         {
           heading && <div styleName="heading">
             { heading }

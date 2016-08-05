@@ -126,12 +126,13 @@ export default {
       "filename": "wasteland_weekend_2014.jpg",
       "id": "15",
       "height": 1000,
-      "width": 700,
+      "placeholderSrc": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAArwAAAPoAQMAAAAGHL9VAAAAA1BMVEXy59cYsrg4AAAAbElEQVR42u3BAQEAAACCIP+vbkhAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB8Glu3AAEda5BMAAAAAElFTkSuQmCC",
       "thumbnailWidth": 450,
       "thumbnailHeight": 450,
       "thumbnailTop": 111,
       "thumbnailLeft": 25,
-      "title": "Wasteland 2014"
+      "title": "Wasteland 2014",
+      "width": 700
     }
   ]
 }
