@@ -1,13 +1,71 @@
 .transition-picture, .transition-picture-expand {
-  position: absolute;
   top: 0;
   left: 0;
 }
 
 .transition-picture {
+  position: absolute;
   z-index: 102;
 }
 
 .transition-picture-expand {
+  position: relative;
   z-index: 101;
+}
+
+.backdrop {
+  background: black;
+  opacity: 0;
+}
+
+.close-button {
+  color: white;
+  font-size: 48px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  z-index: 105;
+
+  &:hover, &:active, :link, :visited {
+    text-decoration: none;
+  }
+
+  &:hover, &:active {
+    color: darken(white, 20);
+  }
+}
+
+.fullscreen {
+  margin: 0 auto;
+  max-height: 90vh;
+  position: relative;
+
+  > .force-ratio {
+    display: block;
+    overflow: hidden;
+  }
+
+  > .content {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    .image {
+      display: block;
+      margin: 0 auto;
+      max-height: 90vh;
+      max-width: 100%;
+    }
+  }
+}
+
+.image-guide {
+  @extend .fullscreen;
+  position: absolute;
+  left: 0;
+  margin: 0 auto;
+  right: 0;
+  top: 0;
 }

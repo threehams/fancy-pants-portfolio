@@ -60,3 +60,13 @@
     }
   }
 }
+
+.image-guide {
+  @extend .fullscreen;
+  position: absolute;
+  visibility: hidden;
+  left: 0;
+  margin: 0 auto;
+  right: 0;
+  top: 0;
+}

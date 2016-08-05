@@ -9,6 +9,9 @@ import { Picture, SourcePicture, State } from '../models';
 import * as pictureActions from '../actions/pictureActions';
 import styles = require('./PictureApp.scss');
 
+const CROSSFADE_DURATION = 50;
+const MOVE_DURATION = 120;
+
 interface PhotoProps {
   alertText?: string;
   fetchPictures: Function;
@@ -22,7 +25,6 @@ interface PhotoProps {
 interface PhotoState {
   animationPhase: string | null;
   showExpand?: boolean;
-  showFinal?: boolean;
 }
 
 export class BasePictureApp extends React.Component<PhotoProps, PhotoState> {
@@ -33,7 +35,6 @@ export class BasePictureApp extends React.Component<PhotoProps, PhotoState> {
     this.state = {
       animationPhase: null,
       showExpand: false,
-      showFinal: false,
     };
   }
 
@@ -59,20 +60,12 @@ export class BasePictureApp extends React.Component<PhotoProps, PhotoState> {
         <div styleName="container" ref={(element) => { this.containerElement = element; }}>
           <Link to="/" className="material-icons" styleName="close-button">cancel</Link>
           <Alert type="error" text={alertText} />
-          <Card>
-            { this.renderPicture(picture, animationPhase) }
-          </Card>
-          <Card>
-            <div>
-              <h2>{picture.title}</h2>
-              {picture.description}
-            </div>
-          </Card>
+          { this.renderPicture(picture, animationPhase) }
           {
             sourcePicture && <TransitionPicture
               container={this.containerElement}
-              crossfadeDuration={50}
-              moveDuration={120}
+              crossfadeDuration={CROSSFADE_DURATION}
+              moveDuration={MOVE_DURATION}
               picture={picture}
               source={sourcePicture}
               target={this.targetElement}
@@ -86,24 +79,15 @@ export class BasePictureApp extends React.Component<PhotoProps, PhotoState> {
   }
 
   private renderPicture(picture: Picture, animationPhase: string) {
-    const { showFinal } = this.state;
-
-    const dynamicStyles = {
-      maxWidth: picture.width,
-      opacity: showFinal ? 1 : 0.01,
-      transition: 'opacity 50ms linear',
-    };
     return (
-      <div styleName="backdrop">
-        <div styleName="fullscreen" style={dynamicStyles}>
-          <div styleName="force-ratio" style={{ paddingTop: `${picture.height / picture.width * 100}%` }} />
-          <div styleName="content">
-            <img
-              ref={(element) => { this.targetElement = element; } }
-              src={picture.url}
-              styleName="image"
-            />
-          </div>
+      <div styleName="image-guide">
+        <div styleName="force-ratio" style={{ paddingTop: `${picture.height / picture.width * 100}%` }} />
+        <div styleName="content">
+          <img
+            ref={(element) => { this.targetElement = element; } }
+            src={picture.url}
+            styleName="image"
+          />
         </div>
       </div>
     );
@@ -116,9 +100,10 @@ export class BasePictureApp extends React.Component<PhotoProps, PhotoState> {
     this.setState({ animationPhase: 'start' });
     setTimeout(() => {
       this.setState({ animationPhase: 'startActive' });
-      // setTimeout(() => {
-      //   this.setState({ animationPhase: 'done' });
-      // }, 500);
+      setTimeout(() => {
+        console.log('done');
+        this.setState({ animationPhase: 'done' });
+      }, (CROSSFADE_DURATION * 2) + (MOVE_DURATION * 2));
     });
   }
 }
