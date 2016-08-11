@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import CssModules = require('react-css-modules');
+import Radium = require('radium');
 import { Link } from 'react-router';
-import Grid = require('react-bootstrap/lib/Grid');
 
 import { Alert, Loader, TransitionPicture } from '../components';
 import { Picture, SourcePicture, State } from '../models';
 import * as pictureActions from '../actions/pictureActions';
-import styles = require('./PictureApp.scss');
 
 const CROSSFADE_DURATION = 20;
 const MOVE_DURATION = 160;
@@ -27,6 +25,7 @@ interface PhotoState {
   showExpand?: boolean;
 }
 
+@Radium
 export class BasePictureApp extends React.Component<PhotoProps, PhotoState> {
   private targetElement: HTMLImageElement;
   private containerElement: HTMLElement;
@@ -70,12 +69,12 @@ export class BasePictureApp extends React.Component<PhotoProps, PhotoState> {
 
     return (
       <div>
-        <div styleName="container" ref={(element) => { this.containerElement = element; }}>
-          <Link to="/" className="material-icons" styleName="close-button">cancel</Link>
+        <div style={styles.container} ref={(element) => { this.containerElement = element; }}>
+          <Link to="/" className="material-icons" style={styles.closeButton}>cancel</Link>
           <Alert type="error" text={alertText} />
-          { this.renderPicture(picture, animationPhase) }
+          { this.renderImageGuide(picture, animationPhase) }
           {
-            sourcePicture && <TransitionPicture
+            <TransitionPicture
               container={this.containerElement}
               crossfadeDuration={CROSSFADE_DURATION}
               moveDuration={MOVE_DURATION}
@@ -86,24 +85,20 @@ export class BasePictureApp extends React.Component<PhotoProps, PhotoState> {
             />
           }
         </div>
-        <div
-          styleName="spotlight"
-          style={Object.assign({}, spotlightStyles.default, spotlightStyles[animationPhase])}
-
-        />
+        <div style={[styles.spotlight, spotlightStyles.default, spotlightStyles[animationPhase]]} />
       </div>
     );
   }
 
-  private renderPicture(picture: Picture, animationPhase: string) {
+  private renderImageGuide(picture: Picture, animationPhase: string) {
     return (
-      <div styleName="image-guide">
-        <div styleName="force-ratio" style={{ paddingTop: `${picture.height / picture.width * 100}%` }} />
-        <div styleName="content">
+      <div style={[styles.fullscreen, styles.imageGuide]}>
+        <div style={[styles.forceRatio, { paddingTop: `${picture.height / picture.width * 100}%` }]} />
+        <div style={styles.content}>
           <img
             ref={(element) => { this.targetElement = element; } }
             src={picture.placeholderSrc}
-            styleName="image"
+            style={styles.image}
           />
         </div>
       </div>
@@ -111,7 +106,10 @@ export class BasePictureApp extends React.Component<PhotoProps, PhotoState> {
   }
 
   private setAnimationPhase() {
-    if (!this.props.picture || this.state.animationPhase) {
+    const { picture } = this.props;
+    const { animationPhase } = this.state;
+
+    if (!picture || animationPhase) {
       return;
     }
     this.setState({ animationPhase: 'start' });
@@ -132,4 +130,72 @@ const mapStateToProps = (state: State, props: PhotoProps) => {
   };
 };
 
-export const PictureApp = connect(mapStateToProps, pictureActions)(CssModules(BasePictureApp, styles));
+export const PictureApp = connect(mapStateToProps, pictureActions)(BasePictureApp);
+
+const styles = {
+  closeButton: {
+    color: 'white',
+    fontSize: 48,
+    position: 'absolute',
+    right: 20,
+    textShadow: '0 0 4px $shadow-color',
+    top: 20,
+    zIndex: 105,
+    ':hover': {
+      color: '#ccc',
+      textDecoration: 'none',
+    },
+    ':active': {
+      color: '#ccc',
+      textDecoration: 'none',
+    },
+    ':link': {
+      textDecoration: 'none',
+    },
+    ':visited': {
+      textDecoration: 'none',
+    },
+  },
+  container: {
+    margin: 15,
+    padding: 0,
+    position: 'relative',
+  },
+  content: {
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
+  forceRatio: {
+    display: 'block',
+    overflow: 'hidden',
+  },
+  fullscreen: {
+    margin: '0 auto',
+    maxHeight: '90vh',
+    position: 'relative',
+  },
+  image: {
+    display: 'block',
+    margin: '0 auto',
+    maxHeight: '90vh',
+    maxWidth: '100%',
+  },
+  imageGuide: {
+    left: 0,
+    margin: '0 auto',
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    visibility: 'hidden',
+  },
+  spotlight: {
+    height: '100vh',
+    left: 0,
+    position: 'fixed',
+    top: 0,
+    width: '100vh',
+  },
+};

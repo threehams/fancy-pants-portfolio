@@ -1,12 +1,10 @@
 import * as React from 'react';
-import CssModules = require('react-css-modules');
+import Radium = require('radium');
 
 import { Card } from '../components';
 import { Picture, SourcePicture } from '../models';
-import styles = require('./TransitionPicture.scss');
 
 const STANDARD_CURVE = 'cubic-bezier(0.4, 0.0, 0.2, 1)';
-// const STANDARD_CURVE = 'ease-in-out';
 
 interface TransitionPictureProps {
   container: HTMLElement;
@@ -18,7 +16,8 @@ interface TransitionPictureProps {
   target: HTMLImageElement;
 }
 
-export class TransitionPictureBase extends React.Component<TransitionPictureProps, {}> {
+@Radium
+export class TransitionPicture extends React.Component<TransitionPictureProps, {}> {
   public render() {
     const { crossfadeDuration, moveDuration, phase, picture, source, target, container } = this.props;
     if (!source || !target) {
@@ -65,7 +64,7 @@ export class TransitionPictureBase extends React.Component<TransitionPictureProp
       },
     };
 
-    const imageStyles = {
+    const thumbnailStyles = {
       default: {
         width: expandStartWidth,
       },
@@ -130,25 +129,18 @@ export class TransitionPictureBase extends React.Component<TransitionPictureProp
 
     return (
       <div>
-        <Card style={Object.assign({}, expandStyles.default, expandStyles[phase])}>
-          <div styleName="fullscreen" style={{maxWidth: picture.width}}>
-            <div styleName="force-ratio" style={{ paddingTop: `${picture.height / picture.width * 100}%` }} />
-            <div styleName="content">
-              <img
-                style={Object.assign({}, finalStyles.default, finalStyles[phase])}
-                src={picture.url}
-                styleName="image"
-              />
-            </div>
-          </div>
-        </Card>
+        <DetailPicture
+          picture={picture}
+          containerStyles={Object.assign({}, expandStyles.default, expandStyles[phase])}
+          imageStyles={Object.assign({}, finalStyles.default, finalStyles[phase])}
+        />
         <div
           style={Object.assign({}, containerStyles.default, containerStyles[phase])}
         >
           <img
             className="img-fluid"
             src={picture.thumbnailUrl}
-            style={imageStyles[phase] || imageStyles.default}
+            style={thumbnailStyles[phase] || thumbnailStyles.default}
           />
         </div>
       </div>
@@ -156,4 +148,53 @@ export class TransitionPictureBase extends React.Component<TransitionPictureProp
   }
 };
 
-export const TransitionPicture = CssModules(TransitionPictureBase, styles);
+interface DetailPictureProps {
+  containerStyles: Object;
+  imageStyles: Object;
+  picture: Picture;
+}
+
+@Radium
+class DetailPicture extends React.Component<DetailPictureProps, {}> {
+  public render() {
+    const { containerStyles, imageStyles, picture } = this.props;
+    return (
+      <Card style={containerStyles}>
+        <div style={[styles.fullscreen, {maxWidth: picture.width}]}>
+          <div style={[styles.forceRatio, { paddingTop: `${picture.height / picture.width * 100}%` }]} />
+          <div style={styles.content}>
+            <img
+              style={[styles.image, imageStyles]}
+              src={picture.url}
+            />
+          </div>
+        </div>
+      </Card>
+    );
+  }
+}
+
+const styles = {
+  content: {
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
+  forceRatio: {
+    display: 'block',
+    overflow: 'hidden',
+  },
+  fullscreen: {
+    margin: '0 auto',
+    maxHeight: '90vh',
+    position: 'relative',
+  },
+  image: {
+    display: 'block',
+    margin: '0 auto',
+    maxHeight: '90vh',
+    maxWidth: '100%',
+  },
+};

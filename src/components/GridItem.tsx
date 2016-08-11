@@ -1,17 +1,14 @@
 import * as React from 'react';
-import CssModules = require('react-css-modules');
+import Radium = require('radium');
 import shallowCompare = require('react-addons-shallow-compare');
-
-import styles = require('./GridItem.scss');
-
-const NEUTRAL_GRAY = 8388608;
 
 interface GridItemProps {
   heading?: string;
   backgroundColor?: string;
 }
 
-export class GridItemUnstyled extends React.Component<GridItemProps, {}> {
+@Radium
+export class GridItem extends React.Component<GridItemProps, {}> {
   public shouldComponentUpdate(nextProps: GridItemProps, nextState: {}) {
     /* istanbul-ignore-next */
     return shallowCompare(this, nextProps, nextState);
@@ -22,9 +19,9 @@ export class GridItemUnstyled extends React.Component<GridItemProps, {}> {
 
     const color = this.textColor(backgroundColor);
     return (
-      <div styleName="container">
+      <div style={styles.container}>
         { children }
-        { heading && <div styleName="heading" style={{ backgroundColor, color }}>{ heading }</div> }
+        { heading && <div style={[styles.heading, { backgroundColor, color }]}>{ heading }</div> }
       </div>
     );
   }
@@ -43,4 +40,16 @@ export class GridItemUnstyled extends React.Component<GridItemProps, {}> {
   }
 }
 
-export const GridItem = CssModules(GridItemUnstyled, styles);
+const styles = {
+  container: {
+    marginBottom: 4,
+  },
+
+  heading: {
+    overflow: 'hidden',
+    padding: 16,
+    textDecoration: 'none',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+}

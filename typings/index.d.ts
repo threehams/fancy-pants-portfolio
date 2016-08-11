@@ -15,6 +15,7 @@
 /// <reference path="modules/chai/index.d.ts" />
 /// <reference path="modules/enzyme/index.d.ts" />
 /// <reference path="modules/mime/index.d.ts" />
+/// <reference path="modules/radium/index.d.ts" />
 /// <reference path="modules/react-redux/index.d.ts" />
 /// <reference path="modules/react-router/index.d.ts" />
 /// <reference path="modules/redux-form/index.d.ts" />

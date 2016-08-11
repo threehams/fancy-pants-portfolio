@@ -74,6 +74,7 @@
     "immutable": "threehams/immutable-js",
     "json-loader": "^0.5.4",
     "node-sass": "^3.8.0",
+    "radium": "^0.18.1",
     "react": "^15.3.0",
     "react-addons-shallow-compare": "^15.3.0",
     "react-bootstrap": "^0.30.2",

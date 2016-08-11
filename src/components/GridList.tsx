@@ -1,10 +1,9 @@
 import * as React from 'react';
-import CssModules = require('react-css-modules');
+import Radium = require('radium');
 import shallowCompare = require('react-addons-shallow-compare');
 
-import styles = require('./GridList.scss');
-
-export class GridListUnstyled extends React.Component<{}, {}> {
+@Radium
+export class GridList extends React.Component<{}, {}> {
   public shouldComponentUpdate(nextProps: {}, nextState: {}) {
     /* istanbul-ignore-next */
     return shallowCompare(this, nextProps, nextState);
@@ -14,11 +13,15 @@ export class GridListUnstyled extends React.Component<{}, {}> {
     const { children } = this.props;
 
     return (
-      <div styleName="container">
+      <div style={styles.container}>
         { children }
       </div>
     );
   }
 }
 
-export const GridList = CssModules(GridListUnstyled, styles);
+const styles = {
+  container: {
+    paddingTop: 4,
+  },
+};
