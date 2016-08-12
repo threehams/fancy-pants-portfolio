@@ -51,7 +51,6 @@ const CSS_LOADERS = {
       test: /^(?:(?!bootstrap).)*\.scss$/,
       loaders: [
         'style?sourceMap',
-        'css?modules&importLoaders=1&localIdentName=[path]__[name]__[local]',
         'sass',
       ],
     },
@@ -65,7 +64,6 @@ const CSS_LOADERS = {
       test: /^(?:(?!bootstrap).)*\.scss$/,
       loader: extractModules.extract(
         'style',
-        'css?modules&importLoaders=1&localIdentName=[path]__[name]__[local]',
         'sass'
       )
     },

@@ -78,7 +78,6 @@
     "react": "^15.3.0",
     "react-addons-shallow-compare": "^15.3.0",
     "react-bootstrap": "^0.30.2",
-    "react-css-modules": "^3.7.9",
     "react-dom": "^15.3.0",
     "react-hot-loader": "^3.0.0-beta.2",
     "react-redux": "^4.4.5",

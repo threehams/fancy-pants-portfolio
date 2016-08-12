@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { List } from 'immutable';
 import { connect } from 'react-redux';
-import CssModules = require('react-css-modules');
+import Radium = require('radium');
 import { Link } from 'react-router';
 import Row = require('react-bootstrap/lib/Row');
 import Col = require('react-bootstrap/lib/Col');
@@ -32,6 +32,7 @@ interface AdminProps {
 
 }
 
+@Radium
 export class BaseAdminApp extends React.Component<AdminProps, {}> {
   public render() {
     return (
@@ -52,4 +53,4 @@ const mapStateToProps = (state: State) => ({
   pictures: state.pictures,
 });
 
-export const AdminApp = connect(mapStateToProps)(CssModules(BaseAdminApp, styles));
+export const AdminApp = connect(mapStateToProps)(BaseAdminApp);
