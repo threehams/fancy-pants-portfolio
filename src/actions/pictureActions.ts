@@ -2,7 +2,7 @@ import { Dispatch } from 'redux';
 import { List } from 'immutable';
 import axios = require('axios');
 
-import { Picture } from '../models';
+import { Picture, SourcePicture } from '../models';
 
 export interface SetState {
   type: 'SET_STATE';
@@ -32,6 +32,28 @@ interface PictureData {
   url: string;
   width: number;
 };
+
+export interface ClosePictureFunction {
+  (source: SourcePicture): ClosePicture;
+}
+
+export interface OpenPictureFunction {
+  (source: SourcePicture): OpenPicture;
+}
+
+export interface ClosePicture {
+  payload: {
+    source: SourcePicture;
+  };
+  type: 'CLOSE_PICTURE';
+}
+
+export interface OpenPicture {
+  payload: {
+    source: SourcePicture;
+  };
+  type: 'OPEN_PICTURE';
+}
 
 const requestPictures = (): ReceivePicturesRequest => ({
   type: 'RECEIVE_PICTURES_REQUEST',
@@ -63,3 +85,17 @@ export const fetchPictures = () => {
       });
   };
 };
+
+export const openPicture: OpenPictureFunction = (source) => ({
+  payload: {
+    source,
+  },
+  type: 'OPEN_PICTURE',
+});
+
+export const closePicture: ClosePictureFunction = (source) => ({
+  payload: {
+    source,
+  },
+  type: 'CLOSE_PICTURE',
+});

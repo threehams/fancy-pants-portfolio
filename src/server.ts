@@ -3,10 +3,9 @@ import path = require('path');
 import express = require('express');
 import webpack = require('webpack');
 import compression = require('compression');
-import * as crypto from 'crypto';
 
 import config from './serverConfig';
-import fixturePictures from './fixtures/fixturePictures';
+import database from './fixtures/database';
 
 const app = express();
 
@@ -31,9 +30,16 @@ if (config.development) {
 }
 
 app.get('/api/pictures', function(request, response) {
+  const pictures = database.pictures.map((picture) => {
+    const derived = {
+      thumbnailUrl: `/assets/${picture.filename.replace('.jpg', '_thumb.jpg')}`,
+      url: `/assets/${picture.filename}`,
+    };
+    return Object.assign({}, picture, derived);
+  });
   setTimeout(() => {
-    response.send(fixturePictures);
-  }, 1000);
+    response.send(pictures);
+  }, 25);
 });
 
 app.get('*', function(request, response) {

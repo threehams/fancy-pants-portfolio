@@ -1,8 +1,8 @@
 import { List, Record } from 'immutable';
-import { Ui, Picture } from './';
+import { Ui, Picture, PictureState } from './';
 
 interface StateProps {
-  pictures?: List<Picture>;
+  pictures?: PictureState;
   ui?: Ui;
 }
 
@@ -10,6 +10,6 @@ export class State extends Record<StateProps>({
   pictures: undefined,
   ui: undefined,
 }) implements StateProps {
-  public pictures: List<Picture>;
+  public pictures: PictureState;
   public ui: Ui;
 };
