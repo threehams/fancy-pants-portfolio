@@ -10,9 +10,11 @@ import database from './fixtures/database';
 const app = express();
 
 if (config.development) {
+  // tslint:disable
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const webpackHotMiddleware = require('webpack-hot-middleware');
   const webpackConfig = require('../webpack.config');
+  // tslint:enable
 
   const compiler = webpack(webpackConfig);
   app.use(webpackDevMiddleware(compiler, {
