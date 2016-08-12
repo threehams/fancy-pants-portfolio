@@ -3,7 +3,7 @@ import { ClosePicture, OpenPicture, ReceivePicturesSuccess } from '../actions/pi
 
 type Actions = ReceivePicturesSuccess | OpenPicture | ClosePicture;
 
-const INITIAL_STATE = new PictureState;
+const INITIAL_STATE = new PictureState();
 
 export const picturesReducer = (state = INITIAL_STATE, action: Actions) => {
   switch (action.type) {

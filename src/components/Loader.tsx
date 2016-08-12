@@ -6,8 +6,7 @@ interface LoaderProps {
   showUntil?: boolean;
 }
 
-@Radium
-export class Loader extends React.Component<LoaderProps, {}> {
+export class LoaderBase extends React.Component<LoaderProps, {}> {
   public shouldComponentUpdate(nextProps: LoaderProps, nextState: {}) {
     /* istanbul-ignore-next */
     return shallowCompare(this, nextProps, nextState);
@@ -66,3 +65,5 @@ const styles = {
     width: 200,
   },
 };
+
+export const Loader = Radium(LoaderBase);

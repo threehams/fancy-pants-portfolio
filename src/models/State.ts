@@ -1,5 +1,5 @@
-import { List, Record } from 'immutable';
-import { Ui, Picture, PictureState } from './';
+import { Record } from 'immutable';
+import { Ui, PictureState } from './';
 
 interface StateProps {
   pictures?: PictureState;
