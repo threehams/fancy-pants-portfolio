@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Radium = require('radium');
 import shallowCompare = require('react-addons-shallow-compare');
+import shadows from '../styles/shadows';
 
 interface CardProps {
   heading?: string;
@@ -33,7 +34,7 @@ export class Card extends React.Component<CardProps, {}> {
 const styles = {
   container: {
     borderRadius: 2,
-    boxShadow: '0 0 4px rgba(0, 0, 0, 0.5)',
+    boxShadow: shadows[1],
     marginBottom: 8,
     overflow: 'hidden',
     position: 'relative',

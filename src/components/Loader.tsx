@@ -55,6 +55,7 @@ const styles = {
     width: '100%',
   },
   loaderInner: {
+    // 'x' is placeholder, per Radium docs
     animation: 'x 2s linear infinite',
     animationName: loaderKeyframes,
     backgroundColor: '#2980b9',
