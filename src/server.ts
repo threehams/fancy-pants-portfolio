@@ -42,7 +42,7 @@ const createPictureResponse = (pictures) => {
     };
     return Object.assign({}, picture, derived);
   });
-}
+};
 
 app.get('/api/pictures', function(request, response) {
   const pictures = createPictureResponse(database);
