@@ -6,11 +6,18 @@ import './polyfills';
 import * as React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
+import { List } from 'immutable';
 
 import { App } from './views/App';
 import configureStore from './configureStore';
+import { Picture } from './models';
+import { fetchPictures } from './actions/pictureActions';
+
+// picture API response injected into page by server
+declare var PICTURE_DATA: List<Picture>;
 
 const store = configureStore(undefined);
+store.dispatch<any>(fetchPictures(PICTURE_DATA));
 
 render(
   <AppContainer>

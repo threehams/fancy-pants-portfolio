@@ -19,7 +19,7 @@ interface TransitionPictureProps {
 @Radium
 export class TransitionPicture extends React.Component<TransitionPictureProps, {}> {
   public render() {
-    const { crossfadeDuration, moveDuration, phase, picture, source, target, container } = this.props;
+    const { children, crossfadeDuration, moveDuration, phase, picture, source, target, container } = this.props;
     if (!source || !target) {
       return <div></div>;
     }
@@ -133,7 +133,9 @@ export class TransitionPicture extends React.Component<TransitionPictureProps, {
           picture={picture}
           containerStyles={Object.assign({}, expandStyles.default, expandStyles[phase])}
           imageStyles={Object.assign({}, finalStyles.default, finalStyles[phase])}
-        />
+        >
+          { children }
+        </DetailPicture>
         <div
           style={Object.assign({}, containerStyles.default, containerStyles[phase])}
         >
@@ -157,7 +159,7 @@ interface DetailPictureProps {
 @Radium
 class DetailPicture extends React.Component<DetailPictureProps, {}> {
   public render() {
-    const { containerStyles, imageStyles, picture } = this.props;
+    const { children, containerStyles, imageStyles, picture } = this.props;
     return (
       <Card style={containerStyles}>
         <div style={[styles.fullscreen, {maxWidth: picture.width}]}>
@@ -169,6 +171,7 @@ class DetailPicture extends React.Component<DetailPictureProps, {}> {
             />
           </div>
         </div>
+        { children }
       </Card>
     );
   }

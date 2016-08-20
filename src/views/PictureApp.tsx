@@ -6,11 +6,12 @@ import { Link } from 'react-router';
 import { Alert, Loader, TransitionPicture } from '../components';
 import { Picture, SourcePicture, State } from '../models';
 import * as pictureActions from '../actions/pictureActions';
+import shadows from '../styles/shadows';
 
 const CROSSFADE_DURATION = 20;
 const MOVE_DURATION = 160;
 
-interface PhotoProps {
+interface PictureAppProps {
   alertText?: string;
   fetchPictures: Function;
   picture: Picture;
@@ -20,20 +21,18 @@ interface PhotoProps {
   };
 }
 
-interface PhotoState {
+interface PictureAppState {
   animationPhase: string | null;
-  showExpand?: boolean;
 }
 
 @Radium
-export class BasePictureApp extends React.Component<PhotoProps, PhotoState> {
+export class BasePictureApp extends React.Component<PictureAppProps, PictureAppState> {
   private targetElement: HTMLImageElement;
   private containerElement: HTMLElement;
-  public constructor(props: PhotoProps, state: PhotoState) {
+  public constructor(props: PictureAppProps, state: PictureAppState) {
     super();
     this.state = {
       animationPhase: null,
-      showExpand: false,
     };
   }
 
@@ -70,7 +69,7 @@ export class BasePictureApp extends React.Component<PhotoProps, PhotoState> {
     return (
       <div>
         <div style={styles.container} ref={(element) => { this.containerElement = element; }}>
-          <Link to="/" className="material-icons" style={styles.closeButton}>cancel</Link>
+          <Link to="/" className="material-icons" style={styles.closeButton}>close</Link>
           <Alert type="error" text={alertText} />
           { this.renderImageGuide(picture, animationPhase) }
           {
@@ -82,7 +81,9 @@ export class BasePictureApp extends React.Component<PhotoProps, PhotoState> {
               source={sourcePicture}
               target={this.targetElement}
               phase={animationPhase}
-            />
+            >
+              <h2>{ picture.title }</h2>
+            </TransitionPicture>
           }
         </div>
         <div style={[styles.spotlight, spotlightStyles.default, spotlightStyles[animationPhase]]} />
@@ -122,7 +123,7 @@ export class BasePictureApp extends React.Component<PhotoProps, PhotoState> {
   }
 }
 
-const mapStateToProps = (state: State, props: PhotoProps) => {
+const mapStateToProps = (state: State, props: PictureAppProps) => {
   return {
     alertText: state.ui.alertText,
     picture: state.pictures.pictures.find(picture => picture.id === props.params.pictureId),
@@ -138,7 +139,7 @@ const styles = {
     fontSize: 48,
     position: 'absolute',
     right: 20,
-    textShadow: '0 0 4px $shadow-color',
+    textShadow: shadows[1],
     top: 20,
     zIndex: 105,
     ':hover': {
@@ -195,7 +196,8 @@ const styles = {
     height: '100vh',
     left: 0,
     position: 'fixed',
+    right: 0,
     top: 0,
-    width: '100vh',
+    width: '100%',
   },
 };

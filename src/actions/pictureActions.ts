@@ -59,7 +59,7 @@ const requestPictures = (): ReceivePicturesRequest => ({
   type: 'RECEIVE_PICTURES_REQUEST',
 });
 
-const receivePictures = (pictures: PictureData[]): ReceivePicturesSuccess => ({
+export const receivePictures = (pictures: PictureData[]): ReceivePicturesSuccess => ({
   payload: {
     pictures: List(pictures).map(picture => new Picture(picture)),
   },
@@ -72,9 +72,13 @@ const errorPictures = (error: Error): ReceivePicturesFailure => ({
   type: 'RECEIVE_PICTURES_FAILURE',
 });
 
-export const fetchPictures = () => {
+export const fetchPictures = (cached) => {
   return (dispatch: Dispatch<ReceivePicturesSuccess | ReceivePicturesFailure>) => {
     dispatch(requestPictures());
+    if (cached) {
+      dispatch(receivePictures(cached));
+      return;
+    }
     return axios.get<PictureData[]>('/api/pictures/')
       .then(response => dispatch(receivePictures(response.data)))
       .catch(error => {

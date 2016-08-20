@@ -5,7 +5,7 @@ deployment:
   staging:
     branch: master
     heroku:
-      appname: reverie-forge
+      appname: vanessamz
 test:
   override:
     - npm run test:ci

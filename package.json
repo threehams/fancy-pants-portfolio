@@ -29,13 +29,13 @@
       }
     },
     "server": {
-      "command": "ts-node ./src/server.ts",
+      "command": "node ./server.js",
       "env": {
         "NODE_ENV": "production"
       }
     },
     "start": {
-      "command": "nodemon --exec ts-node src/server.ts",
+      "command": "nodemon ./server.js",
       "env": {
         "NODE_ENV": "development",
         "PORT": 8080

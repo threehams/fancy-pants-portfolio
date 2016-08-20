@@ -1,11 +1,13 @@
 /* eslint-env node */
 import path = require('path');
+import url = require('url');
 import express = require('express');
 import webpack = require('webpack');
 import compression = require('compression');
 
 import config from './serverConfig';
 import database from './fixtures/database';
+import indexTemplate from './indexTemplate';
 
 const app = express();
 
@@ -31,21 +33,26 @@ if (config.development) {
   app.use('/assets', express.static(path.join(__dirname, '..', 'assets')));
 }
 
-app.get('/api/pictures', function(request, response) {
-  const pictures = database.pictures.map((picture) => {
+// TODO database will eventually not be a fixture, so pictures.pictures will go away
+const createPictureResponse = (pictures) => {
+  return pictures.pictures.map((picture) => {
     const derived = {
-      thumbnailUrl: `/assets/${picture.filename.replace('.jpg', '_thumb.jpg')}`,
-      url: `/assets/${picture.filename}`,
+      thumbnailUrl: url.resolve(config.aws.cloudfrontHost, picture.filename.replace('.jpg', '_thumb.jpg')),
+      url: url.resolve(config.aws.cloudfrontHost, picture.filename),
     };
     return Object.assign({}, picture, derived);
   });
+};
+
+app.get('/api/pictures', function(request, response) {
+  const pictures = createPictureResponse(database);
   setTimeout(() => {
     response.send(pictures);
   }, 25);
 });
 
 app.get('*', function(request, response) {
-  response.sendFile(path.join(__dirname, 'index.html'));
+  response.send(indexTemplate(createPictureResponse(database)));
 });
 
 app.listen(config.port || 8080, function(err: Error) {

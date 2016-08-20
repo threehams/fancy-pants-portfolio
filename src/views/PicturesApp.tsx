@@ -10,8 +10,9 @@ import Grid = require('react-bootstrap/lib/Grid');
 import { Alert, Loader, GridList, GridItem } from '../components';
 import { Picture, SourcePicture, State } from '../models';
 import * as pictureActions from '../actions/pictureActions';
+import shadows from '../styles/shadows';
 
-interface PicturesProps {
+interface PicturesAppProps {
   alertText?: string;
   fetchPictures: Function;
   pictures: List<Picture>;
@@ -19,7 +20,7 @@ interface PicturesProps {
 }
 
 @Radium
-export class BasePicturesApp extends React.Component<PicturesProps, {}> {
+export class BasePicturesApp extends React.Component<PicturesAppProps, {}> {
   public componentDidMount() {
     this.props.fetchPictures();
   }
@@ -37,16 +38,18 @@ export class BasePicturesApp extends React.Component<PicturesProps, {}> {
           <Grid fluid>
             <Row className="no-gutter">
               <Col xs={12}>
-                <div style={[styles.banner, { backgroundImage: `url(/assets/banner.png)` }]} />
+                <div style={
+                  [styles.banner, { backgroundImage: `url(http://d70l5b62xvcqq.cloudfront.net/banner.png)` }]
+                } />
                 <div style={[styles.banner, styles.bannerScrim]} />
                 <div style={styles.contactDetails} className="text-xs-center">
                   <h1>Vanessa Zuloaga</h1>
                   <h2>Artist Person</h2>
                   <ul className="list-unstyled">
-                    <li style={styles.inlineListItem}>Sherman Oaks, CA</li><span style={styles.divider} />
-                    <li style={styles.inlineListItem}>Resume</li><span style={styles.divider} />
-                    <li style={styles.inlineListItem}>Twitter</li><span style={styles.divider} />
-                    <li style={styles.inlineListItem}>Tumblr</li><span style={styles.divider} />
+                    <li style={styles.inlineListItem}>Sherman Oaks, CA</li><span style={styles.divider}>|</span>
+                    <li style={styles.inlineListItem}>Resume</li><span style={styles.divider}>|</span>
+                    <li style={styles.inlineListItem}>Twitter</li><span style={styles.divider}>|</span>
+                    <li style={styles.inlineListItem}>Tumblr</li><span style={styles.divider}>|</span>
                     <li style={styles.inlineListItem}>Twitch</li>
                   </ul>
                 </div>
@@ -132,7 +135,7 @@ const styles = {
     color: 'white',
     left: '50%',
     position: 'absolute',
-    textShadow: '0 0 4px rgba(0, 0, 0, 0.5)',
+    textShadow: shadows[1],
     transform: 'translateX(-50%)',
     zIndex: 2,
   },
