@@ -3,14 +3,12 @@ import { List } from 'immutable';
 import { connect } from 'react-redux';
 import Radium = require('radium');
 import { Link } from 'react-router';
-import Row = require('react-bootstrap/lib/Row');
-import Col = require('react-bootstrap/lib/Col');
-import Grid = require('react-bootstrap/lib/Grid');
 
 import { Alert, Loader, GridList, GridItem } from '../components';
 import { Picture, SourcePicture, State } from '../models';
 import * as pictureActions from '../actions/pictureActions';
 import shadows from '../styles/shadows';
+import imageStyles from '../styles/images';
 
 interface PicturesAppProps {
   alertText?: string;
@@ -31,45 +29,40 @@ export class BasePicturesApp extends React.Component<PicturesAppProps, {}> {
       children,
       pictures,
     } = this.props;
+
     return (
-      <div style={styles.background}>
-        <Alert text={alertText} />
-        <Loader showUntil={!!pictures.size}>
-          <Grid fluid>
-            <Row className="no-gutter">
-              <Col xs={12}>
-                <div style={
-                  [styles.banner, { backgroundImage: `url(http://d70l5b62xvcqq.cloudfront.net/banner.png)` }]
-                } />
-                <div style={[styles.banner, styles.bannerScrim]} />
-                <div style={styles.contactDetails} className="text-xs-center">
-                  <h1>Vanessa Zuloaga</h1>
-                  <h2>Artist Person</h2>
-                  <ul className="list-unstyled">
-                    <li style={styles.inlineListItem}>Sherman Oaks, CA</li><span style={styles.divider}>|</span>
-                    <li style={styles.inlineListItem}>Resume</li><span style={styles.divider}>|</span>
-                    <li style={styles.inlineListItem}>Twitter</li><span style={styles.divider}>|</span>
-                    <li style={styles.inlineListItem}>Tumblr</li><span style={styles.divider}>|</span>
-                    <li style={styles.inlineListItem}>Twitch</li>
-                  </ul>
-                </div>
-              </Col>
-            </Row>
-            <GridList>
-              <Row className="grid-list">
-                { pictures.map(this.renderTile.bind(this)) }
-              </Row>
+      <div>
+        <section style={styles.background}>
+          <Alert text={alertText} />
+          <Loader showUntil={!!pictures.size}>
+            <header style={styles.banner}>
+              <picture>
+                <source srcSet="http://d70l5b62xvcqq.cloudfront.net/banner.png" media="(max-width: 767px)" />
+                <source srcSet="http://d70l5b62xvcqq.cloudfront.net/banner_wide.png" media="(min-width: 768px)" />
+                <img style={styles.banner} src="http://d70l5b62xvcqq.cloudfront.net/banner.png" />
+              </picture>
+              <div style={[styles.banner, styles.bannerScrim]} />
+              <div style={styles.contactDetails}>
+                <h1>Vanessa Zuloaga</h1>
+                <h2>Artist Person</h2>
+                <ul>
+                  <li style={styles.inlineListItem}>Sherman Oaks, CA</li><span style={styles.divider}>|</span>
+                  <li style={styles.inlineListItem}>Resume</li><span style={styles.divider}>|</span>
+                  <li style={styles.inlineListItem}>Twitter</li><span style={styles.divider}>|</span>
+                  <li style={styles.inlineListItem}>Tumblr</li><span style={styles.divider}>|</span>
+                  <li style={styles.inlineListItem}>Twitch</li>
+                </ul>
+              </div>
+            </header>
+            <GridList minWidth={156} maxWidth={240} spacing={4}>
+              { pictures.map(this.renderTile.bind(this)) }
             </GridList>
-            <Row>
-              <Col xs={12}>
-                <p className="copy-dark">© me</p>
-              </Col>
-            </Row>
-          </Grid>
-        </Loader>
-        <div style={styles.detailView}>
+            <p>© me</p>
+          </Loader>
+        </section>
+        <section style={styles.detailView}>
           { children }
-        </div>
+        </section>
       </div>
     );
   }
@@ -82,27 +75,17 @@ export class BasePicturesApp extends React.Component<PicturesAppProps, {}> {
   }
 
   private renderTile(picture: Picture) {
-    const gridProps = {
-      lg: 2,
-      md: 3,
-      sm: 4,
-      xs: 6,
-    };
     return (
-      <Col key={picture.id} {...gridProps}>
-        <Link
-          to={`/pictures/${picture.id}`}
-          className="link-unstyled"
-          onClick={(event) => this.openPicture(event, picture.id)}
-        >
-          <GridItem heading={picture.title} backgroundColor={picture.backgroundColor}>
-            <div style={styles.thumbnail}>
-              <div style={styles.thumbnailBefore} />
-              <div style={[styles.thumbnailContent, { backgroundImage: `url("${picture.thumbnailUrl}")` }]} />
-              </div>
-          </GridItem>
-        </Link>
-      </Col>
+      <Link
+        key={picture.id}
+        to={`/pictures/${picture.id}`}
+        style={{ color: 'inherit' }}
+        onClick={(event) => this.openPicture(event, picture.id)}
+      >
+        <GridItem heading={picture.title} backgroundColor={picture.backgroundColor}>
+          <img src={picture.thumbnailUrl} style={imageStyles.fluid} />
+        </GridItem>
+      </Link>
     );
   }
 }
@@ -116,12 +99,13 @@ export const PicturesApp = connect(mapStateToProps, pictureActions)(BasePictures
 
 const styles = {
   background: {
-    paddingTop: 20,
+    padding: 10,
+    '@media (min-width: 768px)': {
+      padding: 15,
+    },
   },
   banner: {
-    backgroundPosition: 'center',
-    backgroundSize: 'cover',
-    paddingTop: '50%',
+    position: 'relative',
     width: '100%',
   },
   bannerScrim: {
@@ -153,20 +137,6 @@ const styles = {
     display: 'inline-block',
   },
   thumbnail: {
-    paddingTop: '100%',
-    position: 'relative',
-  },
-  thumbnailBefore: {
-    display: 'block',
-    width: '100%',
-  },
-  thumbnailContent: {
-    backgroundSize: 'cover',
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
     width: '100%',
   },
 };

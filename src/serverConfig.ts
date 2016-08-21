@@ -4,7 +4,7 @@
 export default {
   aws: {
     accessKeyId: process.env.AWS_ACCESS_KEY,
-    cloudfrontHost: process.env.AWS_CLOUDFRONT_HOST || 'http://d70l5b62xvcqq.cloudfront.net',
+    cloudfrontHost: process.env.AWS_CLOUDFRONT_HOST || '/assets/',
     s3Bucket: process.env.S3_BUCKET,
     secretAccessKeyId: process.env.AWS_SECRET_ACCESS_KEY,
   },

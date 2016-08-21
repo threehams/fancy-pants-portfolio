@@ -3,6 +3,7 @@ import Radium = require('radium');
 
 import { Card } from '../components';
 import { Picture, SourcePicture } from '../models';
+import imageStyles from '../styles/images';
 
 const STANDARD_CURVE = 'cubic-bezier(0.4, 0.0, 0.2, 1)';
 
@@ -140,9 +141,8 @@ export class TransitionPicture extends React.Component<TransitionPictureProps, {
           style={Object.assign({}, containerStyles.default, containerStyles[phase])}
         >
           <img
-            className="img-fluid"
             src={picture.thumbnailUrl}
-            style={thumbnailStyles[phase] || thumbnailStyles.default}
+            style={[imageStyles.fluid, thumbnailStyles[phase] || thumbnailStyles.default]}
           />
         </div>
       </div>

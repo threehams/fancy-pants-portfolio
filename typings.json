@@ -1,7 +1,6 @@
 {
   "globalDependencies": {
     "axios": "registry:dt/axios#0.9.1+20160317120654",
-    "classnames": "registry:dt/classnames#0.0.0+20160316155526",
     "compression": "registry:dt/compression#0.0.0+20160501162003",
     "core-js": "registry:dt/core-js#0.0.0+20160602141332",
     "express": "registry:dt/express#4.0.0+20160317120654",
@@ -12,7 +11,6 @@
     "react": "registry:dt/react#0.14.0+20160602151522",
     "react-addons-css-transition-group": "registry:dt/react-addons-css-transition-group#0.14.0+20160316155526",
     "react-addons-shallow-compare": "registry:dt/react-addons-shallow-compare#0.14.0+20160316155526",
-    "react-bootstrap": "registry:dt/react-bootstrap#0.0.0+20160627163812",
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
     "reselect": "registry:dt/reselect#2.0.2+20160319031821",
     "serve-static": "registry:dt/serve-static#0.0.0+20160606155157",

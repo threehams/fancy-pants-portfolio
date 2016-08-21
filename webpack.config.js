@@ -3,7 +3,6 @@
 
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const ENTRY_POINTS = {
   development: ['webpack-hot-middleware/client', 'react-hot-loader/patch', './src/index.tsx'],
@@ -11,8 +10,6 @@ const ENTRY_POINTS = {
 };
 
 const ENV = process.env.NODE_ENV || 'development';
-const extractModules = new ExtractTextPlugin('components.css', { allChunks: true });
-const extractBootstrap = new ExtractTextPlugin('bootstrap.css', { allChunks: true });
 
 const PLUGINS = {
   development: [
@@ -36,42 +33,12 @@ const PLUGINS = {
       'process.env': {
         NODE_ENV: '\'production\''
       }
-    }),
-    extractModules,
-    extractBootstrap,
+    })
   ]
 };
 const DEV_TOOLS = {
   development: 'eval',
   production: 'source-map'
-};
-const CSS_LOADERS = {
-  development: [
-    {
-      test: /^(?:(?!bootstrap).)*\.scss$/,
-      loaders: [
-        'style?sourceMap',
-        'sass',
-      ],
-    },
-    {
-      test: /bootstrap\.scss$/,
-      loaders: ['style?sourceMap', 'css', 'sass'],
-    }
-  ],
-  production: [
-    {
-      test: /^(?:(?!bootstrap).)*\.scss$/,
-      loader: extractModules.extract(
-        'style',
-        'sass'
-      )
-    },
-    {
-      test: /bootstrap\.scss$/,
-      loader: extractBootstrap.extract('style', 'css', 'sass')
-    }
-  ]
 };
 
 module.exports = {
@@ -94,7 +61,6 @@ module.exports = {
         loaders: ['react-hot-loader/webpack', 'ts'],
         include: path.join(__dirname, 'src')
       },
-      ...CSS_LOADERS.development,
       {
         test: /\.json$/,
         loader: 'json',
