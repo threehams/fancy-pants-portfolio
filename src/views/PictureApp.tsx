@@ -3,17 +3,17 @@ import { connect } from 'react-redux';
 import Radium = require('radium');
 import { Link } from 'react-router';
 
-import { Alert, Loader, TransitionPicture } from '../components';
+import { Alert, Loader, GridList, GridItem, TransitionPicture } from '../components';
 import { Picture, SourcePicture, State } from '../models';
 import * as pictureActions from '../actions/pictureActions';
 import shadows from '../styles/shadows';
+import imageStyles from '../styles/images';
 
 const CROSSFADE_DURATION = 20;
 const MOVE_DURATION = 160;
 
 interface PictureAppProps {
   alertText?: string;
-  fetchPictures: Function;
   picture: Picture;
   sourcePicture: SourcePicture;
   params: {
@@ -37,7 +37,6 @@ export class BasePictureApp extends React.Component<PictureAppProps, PictureAppS
   }
 
   public componentDidMount() {
-    this.props.fetchPictures();
     this.setAnimationPhase();
   }
 
@@ -83,6 +82,22 @@ export class BasePictureApp extends React.Component<PictureAppProps, PictureAppS
               phase={animationPhase}
             >
               <h2>{ picture.title }</h2>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit fugiat nostrum sed, iure quam
+                ex aut mollitia, quae quasi at alias temporibus rerum totam eum? Necessitatibus velit ab, quia
+                consectetur id incidunt quod dolorum enim nam ipsum voluptate, veniam delectus officia temporibus
+                quaerat earum nihil, possimus fugiat? Accusamus, eum, quaerat?
+              </p>
+              <GridList minWidth={160} maxWidth={240} spacing={4}>
+                <GridItem backgroundColor="#ffffff">
+                  <img
+                    height={300}
+                    src={picture.thumbnailUrl}
+                    style={imageStyles.fluid}
+                    width={300}
+                  />
+                </GridItem>
+              </GridList>
             </TransitionPicture>
           }
         </div>
@@ -180,9 +195,8 @@ const styles = {
   },
   image: {
     display: 'block',
+    height: '90vh',
     margin: '0 auto',
-    maxHeight: '90vh',
-    maxWidth: '100%',
   },
   imageGuide: {
     left: 0,

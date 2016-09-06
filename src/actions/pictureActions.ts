@@ -1,31 +1,30 @@
-import { Dispatch } from 'redux';
 import { List } from 'immutable';
-import axios = require('axios');
 
-import { Picture, SourcePicture } from '../models';
+import { Picture, Source, SourcePicture } from '../models';
 
 export interface SetState {
   type: 'SET_STATE';
-};
-export interface ReceivePicturesRequest {
-  type: 'RECEIVE_PICTURES_REQUEST';
-};
-export interface ReceivePicturesSuccess {
-  type: 'RECEIVE_PICTURES_SUCCESS';
   payload: {
     pictures: List<Picture>;
+    banner: Picture;
   };
 };
-export interface ReceivePicturesFailure {
-  type: 'RECEIVE_PICTURES_FAILURE';
-  error: boolean;
-  payload: Error;
-};
+
+export interface SetStateData {
+  pictures: PictureData[];
+  banner: PictureData;
+}
+
+interface SourceData {
+  url: string;
+  width: number;
+}
 
 interface PictureData {
   description: string;
   height: number;
   id: string;
+  sources: SourceData[];
   thumbnailUrl: string;
   thumbnailWidth: number;
   title: string;
@@ -55,38 +54,20 @@ export interface OpenPicture {
   type: 'OPEN_PICTURE';
 }
 
-const requestPictures = (): ReceivePicturesRequest => ({
-  type: 'RECEIVE_PICTURES_REQUEST',
-});
-
-export const receivePictures = (pictures: PictureData[]): ReceivePicturesSuccess => ({
-  payload: {
-    pictures: List(pictures).map(picture => new Picture(picture)),
-  },
-  type: 'RECEIVE_PICTURES_SUCCESS',
-});
-
-const errorPictures = (error: Error): ReceivePicturesFailure => ({
-  error: true,
-  payload: error,
-  type: 'RECEIVE_PICTURES_FAILURE',
-});
-
-export const fetchPictures = (cached) => {
-  return (dispatch: Dispatch<ReceivePicturesSuccess | ReceivePicturesFailure>) => {
-    dispatch(requestPictures());
-    if (cached) {
-      dispatch(receivePictures(cached));
-      return;
-    }
-    return axios.get<PictureData[]>('/api/pictures/')
-      .then(response => dispatch(receivePictures(response.data)))
-      .catch(error => {
-        // tslint:disable
-        console.log(error);
-        // tslint:enable
-        dispatch(errorPictures(error));
-      });
+// TODO the 'any' is ugly but need to move away from records to deal with record nesting on creation
+export const setState = (stateData: any): SetState => {
+  stateData.banner.sources = List(stateData.banner.sources.map((source) => {
+    return new Source(source);
+  }));
+  return {
+    payload: {
+      banner: new Picture(stateData.banner),
+      pictures: List(stateData.pictures).map((picture: any) => {
+        picture.sources = List(picture.sources.map((source) => new Source(source)));
+        return new Picture(picture);
+      }),
+    },
+    type: 'SET_STATE',
   };
 };
 

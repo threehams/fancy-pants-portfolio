@@ -8,24 +8,20 @@ import { Alert, Loader, GridList, GridItem } from '../components';
 import { Picture, SourcePicture, State } from '../models';
 import * as pictureActions from '../actions/pictureActions';
 import shadows from '../styles/shadows';
-import imageStyles from '../styles/images';
 
 interface PicturesAppProps {
   alertText?: string;
-  fetchPictures: Function;
+  banner: Picture;
   pictures: List<Picture>;
   openPicture: pictureActions.OpenPictureFunction;
 }
 
 @Radium
 export class BasePicturesApp extends React.Component<PicturesAppProps, {}> {
-  public componentDidMount() {
-    this.props.fetchPictures();
-  }
-
   public render() {
     const {
       alertText,
+      banner,
       children,
       pictures,
     } = this.props;
@@ -37,9 +33,9 @@ export class BasePicturesApp extends React.Component<PicturesAppProps, {}> {
           <Loader showUntil={!!pictures.size}>
             <header style={styles.banner}>
               <picture>
-                <source srcSet="http://d70l5b62xvcqq.cloudfront.net/banner.png" media="(max-width: 767px)" />
-                <source srcSet="http://d70l5b62xvcqq.cloudfront.net/banner_wide.png" media="(min-width: 768px)" />
-                <img style={styles.banner} src="http://d70l5b62xvcqq.cloudfront.net/banner.png" />
+                { banner.sources.map((source, i) => {
+                  return (<source key={i} srcSet={source.url} media={`(min-width: ${source.width}px)`} />); }) }
+                <img style={styles.banner} src={banner.url} />
               </picture>
               <div style={[styles.banner, styles.bannerScrim]} />
               <div style={styles.contactDetails}>
@@ -83,7 +79,12 @@ export class BasePicturesApp extends React.Component<PicturesAppProps, {}> {
         onClick={(event) => this.openPicture(event, picture.id)}
       >
         <GridItem heading={picture.title} backgroundColor={picture.backgroundColor}>
-          <img src={picture.thumbnailUrl} style={imageStyles.fluid} />
+          <div style={styles.thumbnailContainer}>
+            <img
+              src={picture.thumbnailUrl}
+              style={styles.thumbnail}
+            />
+          </div>
         </GridItem>
       </Link>
     );
@@ -92,6 +93,7 @@ export class BasePicturesApp extends React.Component<PicturesAppProps, {}> {
 
 const mapStateToProps = (state: State) => ({
   alertText: state.ui.alertText,
+  banner: state.pictures.banner,
   pictures: state.pictures.pictures,
 });
 
@@ -99,9 +101,9 @@ export const PicturesApp = connect(mapStateToProps, pictureActions)(BasePictures
 
 const styles = {
   background: {
-    padding: 10,
+    padding: 4,
     '@media (min-width: 768px)': {
-      padding: 15,
+      padding: 10,
     },
   },
   banner: {
@@ -137,6 +139,17 @@ const styles = {
     display: 'inline-block',
   },
   thumbnail: {
+    height: '100%',
+    left: 0,
+    position: 'absolute',
+    top: 0,
     width: '100%',
+
+  },
+  thumbnailContainer: {
+    height: 0,
+    overflow: 'hidden',
+    paddingBottom: '100%',
+    position: 'relative',
   },
 };

@@ -1,4 +1,5 @@
-import { Record } from 'immutable';
+import { List, Record } from 'immutable';
+import { Source } from './Source';
 
 interface PictureProps {
   backgroundColor?: string;
@@ -6,6 +7,7 @@ interface PictureProps {
   height: number;
   id: string;
   placeholderSrc?: string;
+  sources: List<Source>;
   thumbnailHeight?: number;
   thumbnailLeft?: number;
   thumbnailTop?: number;
@@ -22,6 +24,7 @@ export class Picture extends Record<PictureProps>({
   height: 0,
   id: '',
   placeholderSrc: '',
+  sources: List([]),
   thumbnailHeight: 0,
   thumbnailLeft: 0,
   thumbnailTop: 0,
@@ -36,6 +39,7 @@ export class Picture extends Record<PictureProps>({
   public height: number;
   public id: string;
   public placeholderSrc: string;
+  public sources: List<Source>;
   public thumbnailHeight: number;
   public thumbnailLeft: number;
   public thumbnailTop: number;

@@ -103,7 +103,7 @@ export class TransitionPicture extends React.Component<TransitionPictureProps, {
       },
       startActive: {
         backgroundColor: 'black',
-        backgroundImage: `url(${picture.url})`,
+        backgroundImage: `url(${picture.sources.last().url})`,
         height: expandEndHeight,
         left: 0,
         opacity: 1,
@@ -137,9 +137,7 @@ export class TransitionPicture extends React.Component<TransitionPictureProps, {
         >
           { children }
         </DetailPicture>
-        <div
-          style={Object.assign({}, containerStyles.default, containerStyles[phase])}
-        >
+        <div style={Object.assign({}, containerStyles.default, containerStyles[phase])}>
           <img
             src={picture.thumbnailUrl}
             style={[imageStyles.fluid, thumbnailStyles[phase] || thumbnailStyles.default]}
@@ -165,10 +163,14 @@ class DetailPicture extends React.Component<DetailPictureProps, {}> {
         <div style={[styles.fullscreen, {maxWidth: picture.width}]}>
           <div style={[styles.forceRatio, { paddingTop: `${picture.height / picture.width * 100}%` }]} />
           <div style={styles.content}>
-            <img
-              style={[styles.image, imageStyles]}
-              src={picture.url}
-            />
+            <picture>
+              { picture.sources.map((source, i) => {
+                return (<source key={i} srcSet={source.url} media={`(min-width: ${source.width}px)`} />); }) }
+              <img
+                style={[styles.image, imageStyles]}
+                src={picture.sources.get(0).url}
+              />
+            </picture>
           </div>
         </div>
         { children }
@@ -196,8 +198,8 @@ const styles = {
   },
   image: {
     display: 'block',
+    height: '90vh',
     margin: '0 auto',
-    maxHeight: '90vh',
     maxWidth: '100%',
   },
 };
