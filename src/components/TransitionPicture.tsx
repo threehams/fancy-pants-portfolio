@@ -198,8 +198,8 @@ const styles = {
   },
   image: {
     display: 'block',
-    height: '90vh',
     margin: '0 auto',
+    maxHeight: '90vh',
     maxWidth: '100%',
   },
 };
