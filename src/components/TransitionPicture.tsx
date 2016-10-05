@@ -94,7 +94,7 @@ export class TransitionPicture extends React.Component<TransitionPictureProps, {
       },
       startActive: {
         backgroundColor: 'black',
-        backgroundImage: `url(${picture.sources.last().url})`,
+        backgroundImage: `url(${picture.sources.first().url})`,
         height: expandEndHeight,
         left: 0,
         opacity: 1,
