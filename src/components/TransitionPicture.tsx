@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Radium = require('radium');
 
-import { Card } from '../components';
+import { DetailPicture } from './';
 import { Picture, SourcePicture } from '../models';
 import imageStyles from '../styles/images';
 
@@ -14,7 +14,7 @@ interface TransitionPictureProps {
   phase: string;
   picture: Picture;
   source: SourcePicture;
-  target: HTMLImageElement;
+  target: HTMLDivElement;
 }
 
 @Radium
@@ -22,23 +22,24 @@ export class TransitionPicture extends React.Component<TransitionPictureProps, {
   public render() {
     const { children, crossfadeDuration, moveDuration, phase, picture, source, target, container } = this.props;
     if (!source || !target) {
-      return <div></div>;
+      return this.renderDetailPicture(picture, children, styles.detailContainer);
     }
+
+    const targetImage = this.getImageBoundaries(picture, target);
 
     // TODO move calculations somewhere else
     // TODO the offset here should be simpler...
     const containerRect = container.getBoundingClientRect();
-    const offsetX = containerRect.left;
-    const offsetY = containerRect.top;
-    const targetScale = target.clientWidth / picture.width;
-    const targetRect = target.getBoundingClientRect();
-    const targetX = targetRect.left - offsetX;
-    const targetY = targetRect.top - offsetY;
+    const offsetLeft = containerRect.left;
+    const offsetTop = containerRect.top;
+    const targetScale = targetImage.width / picture.width;
+    const targetLeft = targetImage.left - offsetLeft;
+    const targetTop = targetImage.top - offsetTop;
 
-    const startX = source.position.x - offsetX;
-    const startY = source.position.y - offsetY;
-    const expandStartX = picture.thumbnailLeft * targetScale + targetX - offsetX;
-    const expandStartY = picture.thumbnailTop * targetScale + targetY - offsetY;
+    const startLeft = source.position.x - offsetLeft;
+    const startTop = source.position.y - offsetTop;
+    const expandStartLeft = picture.thumbnailLeft * targetScale + targetLeft - offsetLeft;
+    const expandStartTop = picture.thumbnailTop * targetScale + targetTop - offsetTop;
     const expandEndHeight = picture.height * targetScale;
     const expandEndWidth = picture.width * targetScale;
     const expandStartHeight = picture.thumbnailHeight * targetScale;
@@ -50,16 +51,16 @@ export class TransitionPicture extends React.Component<TransitionPictureProps, {
         opacity: 0,
         position: 'absolute',
         top: 0,
-        transform: `translate(${expandStartX + offsetX}px, ${expandStartY + offsetY}px)`,
+        transform: `translate(${expandStartLeft + offsetLeft}px, ${expandStartTop + offsetTop}px)`,
         zIndex: 102,
       },
       start: {
         opacity: 1,
-        transform: `translate(${startX}px, ${startY}px)`,
+        transform: `translate(${startLeft}px, ${startTop}px)`,
       },
       startActive: {
         opacity: 0,
-        transform: `translate(${expandStartX + offsetX}px, ${expandStartY + offsetY}px)`,
+        transform: `translate(${expandStartLeft + offsetLeft}px, ${expandStartTop + offsetTop}px)`,
         transition: `${moveDuration}ms transform ${STANDARD_CURVE},
           ${crossfadeDuration}ms opacity linear ${moveDuration + crossfadeDuration}ms`,
       },
@@ -79,26 +80,16 @@ export class TransitionPicture extends React.Component<TransitionPictureProps, {
     };
 
     const expandStyles = {
-      default: {
-        backgroundAttachment: 'fixed',
-        backgroundColor: 'black',
-        backgroundImage: 'none',
-        backgroundPosition: `${targetX + offsetX}px ${targetY + offsetY}px`,
+      default: Object.assign({}, {
+        backgroundPosition: `${targetLeft + offsetLeft}px ${targetTop + offsetTop}px`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: expandEndWidth,
-        height: 'auto',
-        left: 0,
-        opacity: 1,
-        position: 'relative',
-        top: 0,
-        width: '100%',
-        zIndex: 101,
-      },
+      }, styles.detailContainer),
       start: {
         height: expandStartHeight,
-        left: `${expandStartX + offsetX}px`,
+        left: `${expandStartLeft + offsetLeft}px`,
         opacity: 0,
-        top: `${expandStartY + offsetY}px`,
+        top: `${expandStartTop + offsetTop}px`,
         width: expandStartWidth,
       },
       startActive: {
@@ -130,13 +121,12 @@ export class TransitionPicture extends React.Component<TransitionPictureProps, {
 
     return (
       <div>
-        <DetailPicture
-          picture={picture}
-          containerStyles={Object.assign({}, expandStyles.default, expandStyles[phase])}
-          imageStyles={Object.assign({}, finalStyles.default, finalStyles[phase])}
-        >
-          { children }
-        </DetailPicture>
+        { this.renderDetailPicture(
+          picture,
+          children,
+          Object.assign({}, expandStyles.default, expandStyles[phase]),
+          Object.assign({}, finalStyles.default, finalStyles[phase]),
+        ) }
         <div style={Object.assign({}, containerStyles.default, containerStyles[phase])}>
           <img
             src={picture.thumbnailUrl}
@@ -146,60 +136,43 @@ export class TransitionPicture extends React.Component<TransitionPictureProps, {
       </div>
     );
   }
+
+  private renderDetailPicture(picture, children, containerStyles?, imageStyles?) {
+    return <DetailPicture
+      picture={picture}
+      containerStyles={containerStyles}
+      imageStyles={imageStyles}
+    >
+      { children }
+    </DetailPicture>;
+  }
+
+  private getImageBoundaries(picture: Picture, target: HTMLDivElement): { width: number, left: number, top: number } {
+    const aspectRatio = picture.width / picture.height;
+    const targetRect = target.getBoundingClientRect();
+    const targetRatio = targetRect.width / targetRect.height;
+    const scale = aspectRatio > targetRatio ? targetRect.width / picture.width : targetRect.height / picture.height;
+    const width = Math.floor(picture.width * scale);
+
+    return {
+      left: (targetRect.width - width) / 2 + targetRect.left,
+      top: targetRect.top,
+      width,
+    };
+  }
 };
 
-interface DetailPictureProps {
-  containerStyles: Object;
-  imageStyles: Object;
-  picture: Picture;
-}
-
-@Radium
-class DetailPicture extends React.Component<DetailPictureProps, {}> {
-  public render() {
-    const { children, containerStyles, imageStyles, picture } = this.props;
-    return (
-      <Card style={containerStyles}>
-        <div style={[styles.fullscreen, {maxWidth: picture.width}]}>
-          <div style={[styles.forceRatio, { paddingTop: `${picture.height / picture.width * 100}%` }]} />
-          <div style={styles.content}>
-            <picture>
-              { picture.sources.map((source, i) => {
-                return (<source key={i} srcSet={source.url} media={`(min-width: ${source.width}px)`} />); }) }
-              <img
-                style={[styles.image, imageStyles]}
-                src={picture.sources.get(0).url}
-              />
-            </picture>
-          </div>
-        </div>
-        { children }
-      </Card>
-    );
-  }
-}
-
 const styles = {
-  content: {
-    bottom: 0,
+  detailContainer: {
+    backgroundAttachment: 'fixed',
+    backgroundColor: 'black',
+    backgroundImage: 'none',
+    height: 'auto',
     left: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-  },
-  forceRatio: {
-    display: 'block',
-    overflow: 'hidden',
-  },
-  fullscreen: {
-    margin: '0 auto',
-    maxHeight: '90vh',
+    opacity: 1,
     position: 'relative',
-  },
-  image: {
-    display: 'block',
-    margin: '0 auto',
-    maxHeight: '90vh',
-    maxWidth: '100%',
+    top: 0,
+    width: '100%',
+    zIndex: 101,
   },
 };

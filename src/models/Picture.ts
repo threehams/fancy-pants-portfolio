@@ -6,7 +6,6 @@ interface PictureProps {
   description: string;
   height: number;
   id: string;
-  placeholderSrc?: string;
   sources: List<Source>;
   thumbnailHeight?: number;
   thumbnailLeft?: number;
@@ -23,7 +22,6 @@ export class Picture extends Record<PictureProps>({
   description: '',
   height: 0,
   id: '',
-  placeholderSrc: '',
   sources: List([]),
   thumbnailHeight: 0,
   thumbnailLeft: 0,
@@ -38,7 +36,6 @@ export class Picture extends Record<PictureProps>({
   public description: string;
   public height: number;
   public id: string;
-  public placeholderSrc: string;
   public sources: List<Source>;
   public thumbnailHeight: number;
   public thumbnailLeft: number;

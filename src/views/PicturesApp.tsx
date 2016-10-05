@@ -56,9 +56,9 @@ export class BasePicturesApp extends React.Component<PicturesAppProps, {}> {
             <p>© me</p>
           </Loader>
         </section>
-        <section style={styles.detailView}>
+        { children && <section style={styles.detailView}>
           { children }
-        </section>
+        </section> }
       </div>
     );
   }
@@ -126,6 +126,8 @@ const styles = {
     zIndex: 2,
   },
   detailView: {
+    bottom: 0,
+    overflowY: 'auto',
     position: 'fixed',
     top: 0,
     width: '100%',

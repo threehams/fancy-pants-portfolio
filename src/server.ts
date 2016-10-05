@@ -42,7 +42,7 @@ const createPictureData = (picture) => {
     }));
   } else {
     const [base, extension] = picture.filename.split('.');
-    sources = [2500, 2000, 1504, 1008, 752, 512].map((size) => {
+    sources = [512, 752, 1008, 1504, 2000, 2500].map((size) => {
       return {
         url: url.resolve(config.aws.cloudfrontHost, `${base}.${size}w.${extension}`),
         width: size,
