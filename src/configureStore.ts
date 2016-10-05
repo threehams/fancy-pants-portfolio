@@ -6,11 +6,11 @@ import { State } from './models';
 declare var module: { hot: any };
 
 const configureStore = (initialState?: State) => {
-  const win: any = window;
+  // const win: any = window;
   const finalCreateStore = compose(
     applyMiddleware(thunk),
     // eslint-disable-next-line no-undef, no-process-env
-    win.devToolsExtension && process.env.NODE_ENV !== 'production' ? win.devToolsExtension() : f => f
+    // win.devToolsExtension && process.env.NODE_ENV !== 'production' ? win.devToolsExtension() : f => f
   )(createStore);
   const store = finalCreateStore(rootReducer, initialState);
 

@@ -109,6 +109,6 @@
     "no-underscore-dangle": 2,
     "no-unneeded-ternary": 1,
     "one-var": [2, "never"],
-    "quotes": [1, "single"],
+    "quotes": [1, "single"]
   }
 }

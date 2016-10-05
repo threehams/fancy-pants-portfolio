@@ -33,26 +33,40 @@ if (config.development) {
   app.use('/assets', express.static(path.join(__dirname, '..', 'assets')));
 }
 
-// TODO database will eventually not be a fixture, so pictures.pictures will go away
-const createPictureResponse = (pictures) => {
-  return pictures.pictures.map((picture) => {
-    const derived = {
-      thumbnailUrl: url.resolve(config.aws.cloudfrontHost, picture.filename.replace('.jpg', '_thumb.jpg')),
-      url: url.resolve(config.aws.cloudfrontHost, picture.filename),
-    };
-    return Object.assign({}, picture, derived);
-  });
+const createPictureData = (picture) => {
+  let sources;
+  if (picture.sources) {
+    sources = picture.sources.map((source) => ({
+      url: url.resolve(config.aws.cloudfrontHost, source.filename),
+      width: source.width,
+    }));
+  } else {
+    const [base, extension] = picture.filename.split('.');
+    sources = [512, 752, 1008, 1504, 2000, 2500].map((size) => {
+      return {
+        url: url.resolve(config.aws.cloudfrontHost, `${base}.${size}w.${extension}`),
+        width: size,
+      };
+    });
+  }
+  const derived = {
+    sources,
+    thumbnailUrl: url.resolve(config.aws.cloudfrontHost, picture.filename.replace('.jpg', '.thumb.jpg')),
+    url: url.resolve(config.aws.cloudfrontHost, picture.filename),
+  };
+  return Object.assign({}, picture, derived);
 };
 
-app.get('/api/pictures', function(request, response) {
-  const pictures = createPictureResponse(database);
-  setTimeout(() => {
-    response.send(pictures);
-  }, 25);
-});
+// TODO database will eventually not be a fixture, so pictures.pictures will go away
+const createPictureList = (data) => {
+  return data.pictures.map(createPictureData);
+};
 
 app.get('*', function(request, response) {
-  response.send(indexTemplate(createPictureResponse(database)));
+  response.send(indexTemplate({
+    banner: createPictureData(database.banner),
+    pictures: createPictureList(database),
+  }));
 });
 
 app.listen(config.port || 8080, function(err: Error) {

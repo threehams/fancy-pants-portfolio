@@ -3,17 +3,17 @@ import { connect } from 'react-redux';
 import Radium = require('radium');
 import { Link } from 'react-router';
 
-import { Alert, Loader, TransitionPicture } from '../components';
+import { Alert, GridList, GridItem, Loader, TransitionPicture } from '../components';
 import { Picture, SourcePicture, State } from '../models';
 import * as pictureActions from '../actions/pictureActions';
 import shadows from '../styles/shadows';
+import imageStyles from '../styles/images';
 
 const CROSSFADE_DURATION = 20;
 const MOVE_DURATION = 160;
 
 interface PictureAppProps {
   alertText?: string;
-  fetchPictures: Function;
   picture: Picture;
   sourcePicture: SourcePicture;
   params: {
@@ -27,7 +27,7 @@ interface PictureAppState {
 
 @Radium
 export class BasePictureApp extends React.Component<PictureAppProps, PictureAppState> {
-  private targetElement: HTMLImageElement;
+  private targetElement: HTMLDivElement;
   private containerElement: HTMLElement;
   public constructor(props: PictureAppProps, state: PictureAppState) {
     super();
@@ -37,7 +37,6 @@ export class BasePictureApp extends React.Component<PictureAppProps, PictureAppS
   }
 
   public componentDidMount() {
-    this.props.fetchPictures();
     this.setAnimationPhase();
   }
 
@@ -72,8 +71,7 @@ export class BasePictureApp extends React.Component<PictureAppProps, PictureAppS
           <Link to="/" className="material-icons" style={styles.closeButton}>close</Link>
           <Alert type="error" text={alertText} />
           { this.renderImageGuide(picture, animationPhase) }
-          {
-            <TransitionPicture
+          { <TransitionPicture
               container={this.containerElement}
               crossfadeDuration={CROSSFADE_DURATION}
               moveDuration={MOVE_DURATION}
@@ -82,7 +80,23 @@ export class BasePictureApp extends React.Component<PictureAppProps, PictureAppS
               target={this.targetElement}
               phase={animationPhase}
             >
-              <h2>{ picture.title }</h2>
+            <h2 style={styles.title}>{ picture.title }</h2>
+              <p style={styles.description}>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit fugiat nostrum sed, iure quam
+                ex aut mollitia, quae quasi at alias temporibus rerum totam eum? Necessitatibus velit ab, quia
+                consectetur id incidunt quod dolorum enim nam ipsum voluptate, veniam delectus officia temporibus
+                quaerat earum nihil, possimus fugiat? Accusamus, eum, quaerat?
+              </p>
+              <GridList minWidth={160} maxWidth={240} spacing={4}>
+                <GridItem backgroundColor="#ffffff">
+                  <img
+                    height={300}
+                    src={picture.thumbnailUrl}
+                    style={imageStyles.fluid}
+                    width={300}
+                  />
+                </GridItem>
+              </GridList>
             </TransitionPicture>
           }
         </div>
@@ -93,15 +107,10 @@ export class BasePictureApp extends React.Component<PictureAppProps, PictureAppS
 
   private renderImageGuide(picture: Picture, animationPhase: string) {
     return (
-      <div style={[styles.fullscreen, styles.imageGuide]}>
+      <div
+        style={[styles.fullscreen, styles.imageGuide]}
+        ref={(element) => { this.targetElement = element; } }>
         <div style={[styles.forceRatio, { paddingTop: `${picture.height / picture.width * 100}%` }]} />
-        <div style={styles.content}>
-          <img
-            ref={(element) => { this.targetElement = element; } }
-            src={picture.placeholderSrc}
-            style={styles.image}
-          />
-        </div>
       </div>
     );
   }
@@ -142,25 +151,14 @@ const styles = {
     textShadow: shadows[1],
     top: 20,
     zIndex: 105,
-    ':hover': {
-      color: '#ccc',
-      textDecoration: 'none',
-    },
-    ':active': {
-      color: '#ccc',
-      textDecoration: 'none',
-    },
-    ':link': {
-      textDecoration: 'none',
-    },
-    ':visited': {
-      textDecoration: 'none',
-    },
   },
   container: {
-    margin: 15,
+    margin: 0,
     padding: 0,
     position: 'relative',
+    '@media (min-width: 768px)': {
+      margin: 15,
+    },
   },
   content: {
     bottom: 0,
@@ -168,6 +166,9 @@ const styles = {
     position: 'absolute',
     right: 0,
     top: 0,
+  },
+  description: {
+    color: 'white',
   },
   forceRatio: {
     display: 'block',
@@ -199,5 +200,8 @@ const styles = {
     right: 0,
     top: 0,
     width: '100%',
+  },
+  title: {
+    color: 'white',
   },
 };
